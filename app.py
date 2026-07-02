@@ -4,7 +4,9 @@ import itertools
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from sqlalchemy.exc import IntegrityError
 
 from models import db, Artist, Song, User, Swipe
 
@@ -77,6 +79,29 @@ def load_user(user_id):
 @login_manager.unauthorized_handler
 def unauthorized():
     return jsonify({'status': 'error', 'message': 'not logged in'}), 401
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    if not data or not data.get('username') or not data.get('email') or not data.get('password'):
+        return jsonify({'status': 'error', 'message': 'username, email, and password required'}), 400
+
+    user = User(
+        username=data['username'],
+        email=data['email'],
+        password_hash=generate_password_hash(data['password']),
+        onboarding_genres=data.get('onboarding_genres'),
+    )
+    db.session.add(user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'status': 'error', 'message': 'username or email already taken'}), 409
+
+    login_user(user)
+    return jsonify({'status': 'ok', 'message': 'registered', 'user': user.username})
 
 
 @app.route('/login', methods=['POST'])
