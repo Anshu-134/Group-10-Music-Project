@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS "artists" (
-    "artist_id"	INTEGER PRIMARY KEY,
+    "artist_id"	SERIAL PRIMARY KEY,
     "name"	TEXT NOT NULL,
     "country" TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "songs" (
-    "song_id"	INTEGER PRIMARY KEY,
+    "song_id"	SERIAL PRIMARY KEY,
     "soundcloud_id"	TEXT NOT NULL UNIQUE,
     "title"	TEXT NOT NULL,
     "artist_id"	INTEGER,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "songs" (
 );
 
 CREATE TABLE IF NOT EXISTS "users" (
-    "user_id" INTEGER PRIMARY KEY,
+    "user_id" SERIAL PRIMARY KEY,
     "username" TEXT NOT NULL UNIQUE,
     "email" TEXT NOT NULL UNIQUE,
     "password_hash" TEXT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 );
 
 CREATE TABLE IF NOT EXISTS "swipes" (
-    "swipe_id" INTEGER PRIMARY KEY,
+    "swipe_id" SERIAL PRIMARY KEY,
     "user_id" INTEGER NOT NULL,
     "song_id" INTEGER NOT NULL,
     "like" BOOLEAN NOT NULL,
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS "recommendations" (
     "song_id" INTEGER NOT NULL,
     "score" REAL NOT NULL,
     "generated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("user_id", "song_id"),
     FOREIGN KEY ("user_id") REFERENCES "users"("user_id"),
     FOREIGN KEY ("song_id") REFERENCES "songs"("song_id")
 );
