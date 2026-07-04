@@ -215,5 +215,30 @@ def recommend():
     return jsonify({'status': 'ok', 'song': _track_to_dict(track)})
 
 
+@app.route('/history', methods=['GET'])
+@login_required
+def history():
+    swipes = (
+        Swipe.query
+        .filter_by(user_id=current_user.user_id)
+        .order_by(Swipe.timestamp.desc())
+        .limit(10)
+        .all()
+    )
+    return jsonify({
+        'status': 'ok',
+        'history': [
+            {
+                'song_id': swipe.song.soundcloud_id,
+                'title': swipe.song.title,
+                'artist': swipe.song.artist.name,
+                'direction': 'like' if swipe.like else 'dislike',
+                'timestamp': swipe.timestamp.isoformat(),
+            }
+            for swipe in swipes
+        ],
+    })
+
+
 if __name__ == '__main__':
     app.run(debug=True)
