@@ -3,6 +3,7 @@ import random
 import itertools
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -14,6 +15,19 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
+
+# Frontend is on Vercel, backend on Render — different origins, so the
+# login session cookie needs SameSite=None + Secure to survive the
+# cross-site request, and CORS needs supports_credentials=True so the
+# browser will actually send/accept it.
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
+
+CORS(
+    app,
+    origins=['https://group-10-music-project.vercel.app'],
+    supports_credentials=True,
+)
 
 database_url = os.environ.get('DATABASE_URL', '')
 if database_url.startswith('postgres://'):
