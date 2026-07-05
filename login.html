@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in — NicheTune</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #222220; color: #F5E8D5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; }
+
+    .left-panel {
+      width: 42%;
+      background: #222220;
+      border-right: 0.5px solid #3D3A2E;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      gap: 20px;
+    }
+
+    .vinyl-wrap { width: 150px; height: 150px; animation: spin 8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .vinyl-wrap { animation: none; } }
+
+    .vinyl-outer {
+      width: 150px; height: 150px; border-radius: 50%;
+      background: conic-gradient(#1A1A18 0deg,#2A2A26 18deg,#1A1A18 36deg,#2A2A26 54deg,#1A1A18 72deg,#2A2A26 90deg,#1A1A18 108deg,#2A2A26 126deg,#1A1A18 144deg,#2A2A26 162deg,#1A1A18 180deg,#2A2A26 198deg,#1A1A18 216deg,#2A2A26 234deg,#1A1A18 252deg,#2A2A26 270deg,#1A1A18 288deg,#2A2A26 306deg,#1A1A18 324deg,#2A2A26 342deg,#1A1A18 360deg);
+      border: 2px solid #3D3A2E;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vinyl-mid { width: 60px; height: 60px; border-radius: 50%; background: #4A5230; border: 2px solid #5C6640; display: flex; align-items: center; justify-content: center; }
+    .vinyl-center { width: 20px; height: 20px; border-radius: 50%; background: #3A4228; border: 1.5px solid #6B7848; }
+
+    .welcome-text { font-size: 18px; font-weight: 500; color: #F5D5A0; text-align: center; line-height: 1.4; }
+    .welcome-sub { font-size: 12px; color: #5C6640; text-align: center; line-height: 1.6; max-width: 220px; }
+
+    .right-panel {
+      flex: 1;
+      background: #F5E8D5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 44px;
+    }
+
+    .form-title { font-size: 22px; font-weight: 500; color: #1A1A18; margin-bottom: 28px; }
+
+    .field { margin-bottom: 18px; }
+    label { font-size: 12px; color: #B04030; letter-spacing: 0.04em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+    input {
+      width: 100%; background: #fff; border: 0.5px solid #D4846A;
+      border-radius: 6px; padding: 10px 14px; font-size: 14px;
+      color: #1A1A18; outline: none; transition: border-color 0.15s;
+    }
+    input:focus { border-color: #C03820; }
+    input.invalid { border-color: #C03820; }
+
+    .field-error { font-size: 12px; color: #C03820; min-height: 16px; margin-top: 4px; }
+
+    .global-error {
+      background: rgba(192,56,32,0.08);
+      border: 0.5px solid rgba(192,56,32,0.4);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #C03820;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .btn-primary {
+      width: 100%; background: #C03820; border: none; border-radius: 6px;
+      padding: 11px; font-size: 14px; font-weight: 500; color: #F5E8D5;
+      cursor: pointer; transition: opacity 0.15s; margin-top: 6px;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 0.5px; background: #D4846A; }
+    .divider span { font-size: 11px; color: #B04030; }
+
+    .btn-secondary {
+      width: 100%; background: transparent; border: 0.5px solid #D4846A;
+      border-radius: 6px; padding: 10px; font-size: 14px; color: #4A5230;
+      cursor: pointer; text-align: center; text-decoration: none; display: block;
+      transition: border-color 0.15s;
+    }
+    .btn-secondary:hover { border-color: #4A5230; color: #4A5230; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .left-panel { width: 100%; border-right: none; border-bottom: 0.5px solid #3D3A2E; padding: 40px 24px; }
+      .right-panel { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="left-panel">
+    <div class="vinyl-wrap">
+      <div class="vinyl-outer">
+        <div class="vinyl-mid">
+          <div class="vinyl-center"></div>
+        </div>
+      </div>
+    </div>
+    <p class="welcome-text">Welcome</p>
+    <p class="welcome-sub">[Slogan / welcome message TBD]</p>
+  </div>
+
+  <div class="right-panel">
+    <p class="form-title">Sign in</p>
+
+    <div class="global-error" id="global-error"></div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="your username" autocomplete="username">
+      <div class="field-error" id="username-error"></div>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+      <div class="field-error" id="password-error"></div>
+    </div>
+
+    <button class="btn-primary" id="login-btn" onclick="handleLogin()">Sign in</button>
+
+    <div class="divider"><span>or</span></div>
+
+    <a href="signup.html" class="btn-secondary">Create an account</a>
+  </div>
+
+  <script>
+    const BASE_URL = 'https://group-10-backend.onrender.com';
+
+    function clearErrors() {
+      document.getElementById('username-error').textContent = '';
+      document.getElementById('password-error').textContent = '';
+      document.getElementById('global-error').style.display = 'none';
+      document.getElementById('username').classList.remove('invalid');
+      document.getElementById('password').classList.remove('invalid');
+    }
+
+    function showGlobalError(msg) {
+      const el = document.getElementById('global-error');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    async function handleLogin() {
+      clearErrors();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      let valid = true;
+      if (!username) { document.getElementById('username-error').textContent = 'Username is required.'; document.getElementById('username').classList.add('invalid'); valid = false; }
+      if (!password) { document.getElementById('password-error').textContent = 'Password is required.'; document.getElementById('password').classList.add('invalid'); valid = false; }
+      if (!valid) return;
+
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      try {
+        const res = await fetch(`${BASE_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ username, password })
+        });
+        if (res.ok) { window.location.href = 'home.html'; }
+        else if (res.status === 401) { showGlobalError('Incorrect username or password.'); }
+        else if (res.status === 400) { showGlobalError('Please fill in all fields.'); }
+        else { showGlobalError('Something went wrong. Please try again.'); }
+      } catch { showGlobalError('Could not connect to the server. Check your connection.'); }
+      finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+  </script>
+</body>
+</html>
