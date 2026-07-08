@@ -145,6 +145,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    height: 100%;
     color: var(--text-dark);
   }
 
@@ -280,12 +281,13 @@
 
   /* ---------- Action buttons ---------- */
   .actions{
-    margin-top: auto;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 28px;
-    padding: 14px 22px 18px;
+    gap: 40px;
   }
 
   .action-btn{
