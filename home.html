@@ -557,7 +557,7 @@ async function sendSwipe(direction){
 document.getElementById("likeBtn")
 .addEventListener(
     "click",
-    () => sendSwipe("right")
+    () => sendSwipe("like")
 );
 
 
@@ -565,29 +565,9 @@ document.getElementById("likeBtn")
 document.getElementById("dislikeBtn")
 .addEventListener(
     "click",
-    () => sendSwipe("left")
+    () => sendSwipe("dislike")
 );
 
-
-
-document.getElementById("logoutBtn")
-.addEventListener(
-    "click",
-    async()=>{
-
-        await fetch(
-            `${BASE_URL}/logout`,
-            {
-                method:"POST",
-                credentials:"include"
-            }
-        );
-
-
-        window.location.href="login.html";
-
-    }
-);
 
 const card = document.getElementById("activeCard");
 
@@ -667,7 +647,7 @@ function endDrag(){
     if(distance > 100){
 
         card.classList.add("fly-right");
-        sendSwipe("right");
+        sendSwipe("like");
 
     }
 
@@ -675,7 +655,7 @@ function endDrag(){
     else if(distance < -100){
 
         card.classList.add("fly-left");
-        sendSwipe("left");
+        sendSwipe("dislike");
 
     }
 
@@ -685,11 +665,13 @@ function endDrag(){
         card.style.transform = "";
 
     }
+  }
 
-}
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    window.location.href = "login.html";
+});
 
 loadSong();
-
 
 </script>
 </body>
