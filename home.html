@@ -142,7 +142,7 @@
     background: var(--cream);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -282,12 +282,40 @@
   /* ---------- Action buttons ---------- */
   .actions{
     position: absolute;
-    bottom: 20px;
+    left: -90px;
+    right: -90px;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+
+.dislike-btn{
+    position: absolute;
     left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+}
+
+
+.like-btn{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+}
+
+
+.undo-btn{
+    position: absolute;
+    left: 50%;
+    bottom: -80px;
+    transform: translateX(-50%);
+    pointer-events: auto;
+
   }
 
   .action-btn{
@@ -567,52 +595,73 @@ let startX = 0;
 let currentX = 0;
 let dragging = false;
 
+
 card.addEventListener("mousedown", startDrag);
-card.addEventListener("touchstart", startDrag);
+document.addEventListener("mousemove", drag);
+document.addEventListener("mouseup", endDrag);
 
-card.addEventListener("mousemove", drag);
-card.addEventListener("touchmove", drag);
 
-card.addEventListener("mouseup", endDrag);
-card.addEventListener("touchend", endDrag);
+card.addEventListener("touchstart", startDrag, {passive:false});
+document.addEventListener("touchmove", drag, {passive:false});
+document.addEventListener("touchend", endDrag);
+
 
 
 function startDrag(e){
 
+    if(e.target.closest("button")){
+        return;
+    }
+
     dragging = true;
-    card.classList.add("dragging");
 
     startX = e.type.includes("touch")
         ? e.touches[0].clientX
         : e.clientX;
+
+    currentX = startX;
+
+    card.classList.add("dragging");
 }
+
 
 
 function drag(e){
 
-    if(!dragging) return;
+    if(!dragging){
+        return;
+    }
 
-    currentX = (
-        e.type.includes("touch")
+    e.preventDefault();
+
+    currentX = e.type.includes("touch")
         ? e.touches[0].clientX
-        : e.clientX
-    );
+        : e.clientX;
+
 
     let distance = currentX - startX;
+
 
     card.style.transform =
         `translateX(${distance}px) rotate(${distance * 0.05}deg)`;
 }
 
 
+
 function endDrag(){
 
-    if(!dragging) return;
+    if(!dragging){
+        return;
+    }
+
 
     dragging = false;
+
     card.classList.remove("dragging");
 
+
     let distance = currentX - startX;
+
 
 
     if(distance > 100){
@@ -620,16 +669,18 @@ function endDrag(){
         card.classList.add("fly-right");
         sendSwipe("right");
 
-    } 
-    
+    }
+
+
     else if(distance < -100){
 
         card.classList.add("fly-left");
         sendSwipe("left");
 
-    } 
-    
-    else {
+    }
+
+
+    else{
 
         card.style.transform = "";
 
