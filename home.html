@@ -110,6 +110,32 @@
   }
   .logout-btn:active{ transform: scale(0.97); }
 
+  .top-actions{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.profile-btn{
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-cream);
+    background:transparent;
+    border:1.5px solid rgba(242,226,184,0.35);
+    border-radius:999px;
+    padding:10px 20px;
+    cursor:pointer;
+    transition:background 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-btn:hover{
+    background:rgba(242,226,184,0.08);
+    border-color:rgba(242,226,184,0.6);
+}
+
   /* ---------- Main stage ---------- */
   main{
     flex: 1;
@@ -403,9 +429,19 @@
   <div class="topbar">
     <div class="brand">
       <div class="brand-mark"></div>
-      <span class="brand-name">TBH</span>
+      <span class="brand-name">TBD</span>
     </div>
-    <button class="logout-btn" id="logoutBtn">Log out</button>
+    <div class="top-actions">
+
+    <button class="profile-btn" id="profileBtn">
+    Profile
+</button>
+
+    <button class="logout-btn" id="logoutBtn">
+        Log out
+    </button>
+    </div>
+
   </div>
 
   <main>
@@ -472,86 +508,49 @@ const BASE_URL = "https://group-10-backend.onrender.com";
 
 let currentSong = null;
 
+async function sendSwipe(direction){
 
-async function loadSong(){
+    if(!currentSong){
+        console.log("No current song");
+        return;
+    }
 
-    try {
+    try{
 
         const response = await fetch(
-            `${BASE_URL}/recommend`,
+            `${BASE_URL}/swipe`,
             {
-                credentials: "include"
+                method:"POST",
+
+                credentials:"include",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    song_id: currentSong.id,
+                    direction: direction
+                })
             }
         );
 
+
         const data = await response.json();
 
-        console.log(data);
-
-        currentSong = data.song;
+        console.log("Swipe response:", data);
 
 
-        document.getElementById("songTitle").textContent =
-            currentSong.title;
-
-
-        document.getElementById("artistName").textContent =
-            currentSong.artist;
-
-
-        document.getElementById("genreLabel").textContent =
-            currentSong.genre;
-
-
-        document.getElementById("artImage").style.backgroundImage =
-            `url(${currentSong.artwork_url})`;
-
-
-        document.getElementById("soundcloud-embed").src =
-            `https://w.soundcloud.com/player/?url=${currentSong.permalink_url}`;
+        await loadSong();
 
 
     } catch(error){
 
-        console.log(error);
+        console.error("SWIPE ERROR:", error);
 
     }
 
 }
-
-
-
-async function sendSwipe(direction){
-
-    if(!currentSong){
-        return;
-    }
-
-
-    await fetch(
-        `${BASE_URL}/swipe`,
-        {
-            method:"POST",
-
-            credentials:"include",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-                song_id: currentSong.id,
-                direction: direction
-            })
-        }
-    );
-
-
-    loadSong();
-
-}
-
-
 
 
 document.getElementById("likeBtn")
@@ -668,8 +667,76 @@ function endDrag(){
   }
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
+    console.log("LOGOUT CLICKED");
     window.location.href = "login.html";
 });
+
+
+document.getElementById("profileBtn")
+.addEventListener("click", () => {
+    window.location.href = "profile.html";
+});
+
+async function loadSong(){
+
+    try {
+
+        console.log("Loading song...");
+
+        const response = await fetch(
+            `${BASE_URL}/recommend`,
+            {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        console.log("Status:", response.status);
+
+        const data = await response.json();
+
+        console.log("Backend response:", data);
+
+
+        if(!data.song){
+            console.log("No song returned:", data);
+            return;
+        }
+
+        currentSong = data.song;
+
+        document.getElementById("songTitle").textContent =
+            currentSong.title || "Unknown Title";
+
+        document.getElementById("artistName").textContent =
+            currentSong.artist || "Unknown Artist";
+
+        document.getElementById("genreLabel").textContent =
+            currentSong.genre || "Unknown";
+
+
+        if(currentSong.artwork_url){
+            document.getElementById("artImage").style.backgroundImage =
+                `url("${currentSong.artwork_url}")`;
+        }
+
+
+        document.getElementById("soundcloud-embed").src =
+            `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentSong.permalink_url)}`;
+
+
+        console.log("Loaded:", currentSong);
+
+
+    } catch(error){
+
+        console.error("LOAD SONG ERROR:", error);
+
+    }
+}
 
 loadSong();
 

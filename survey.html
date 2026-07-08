@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Discover Your Taste — TBH</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --charcoal:#1c1a17;
+    --cream:#efe6d2;
+    --cream-light:#f7f1e3;
+    --olive:#6b6f38;
+    --olive-dark:#565933;
+    --rust:#c1502e;
+    --text-dark:#211f1b;
+    --muted:#948a68;
+}
+
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+
+body{
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at 20% 10%, rgba(107,111,56,.18), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(193,80,46,.15), transparent 45%),
+    var(--charcoal);
+
+    font-family:'Inter',sans-serif;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:var(--cream);
+}
+
+
+
+.container{
+
+    width:90%;
+    max-width:520px;
+
+}
+
+
+
+.logo{
+
+    text-align:center;
+    font-family:'Fraunces',serif;
+    font-size:2rem;
+    margin-bottom:10px;
+
+}
+
+
+
+.subtitle{
+
+    text-align:center;
+    color:var(--muted);
+    margin-bottom:30px;
+
+}
+
+
+
+.card{
+
+    background:var(--cream);
+
+    color:var(--text-dark);
+
+    padding:35px;
+
+    border-radius:28px;
+
+    box-shadow:
+    0 30px 60px rgba(0,0,0,.45);
+
+}
+
+
+
+.question{
+
+    font-family:'Fraunces',serif;
+
+    font-size:1.4rem;
+
+    margin-bottom:18px;
+
+}
+
+
+
+.options{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.option{
+
+    border:1.5px solid rgba(33,31,27,.15);
+
+    background:var(--cream-light);
+
+    padding:12px 18px;
+
+    border-radius:999px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-weight:500;
+
+}
+
+
+
+.option:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+.option.selected{
+
+    background:var(--olive);
+
+    color:white;
+
+}
+
+
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    border:none;
+
+    background:var(--cream-light);
+
+    font-size:1rem;
+
+    margin-bottom:25px;
+
+}
+
+
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        160deg,
+        var(--olive),
+        var(--olive-dark)
+    );
+
+    color:white;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+.progress{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:.8rem;
+
+    margin-top:20px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="logo">
+    TBH
+</div>
+
+
+<p class="subtitle">
+Tell us your taste. We'll find your next favorite track.
+</p>
+
+
+
+<div class="card">
+
+
+<h2 class="question">
+What genres do you enjoy?
+</h2>
+
+
+<div class="options" id="genres">
+
+<span class="option">Indie</span>
+<span class="option">R&B</span>
+<span class="option">Hip-Hop</span>
+<span class="option">Pop</span>
+<span class="option">Rock</span>
+<span class="option">EDM</span>
+<span class="option">Classical</span>
+<span class="option">International</span>
+
+</div>
+
+
+
+<h2 class="question">
+What mood are you looking for?
+</h2>
+
+
+<div class="options" id="moods">
+
+<span class="option">Chill</span>
+<span class="option">Happy</span>
+<span class="option">Sad</span>
+<span class="option">Energetic</span>
+<span class="option">Late Night</span>
+
+</div>
+
+
+
+
+<h2 class="question">
+Favorite artists? (optional)
+</h2>
+
+
+<input 
+id="artists"
+placeholder="Ex: The Weeknd, Lana Del Rey..."
+>
+
+
+
+
+<button id="continueBtn">
+Continue
+</button>
+
+
+</div>
+
+
+<p class="progress">
+Step 1 of 1 • Personalizing your discovery
+</p>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+let selectedGenres = [];
+
+let selectedMood = "";
+
+
+
+document.querySelectorAll("#genres .option")
+.forEach(option=>{
+
+
+option.onclick=()=>{
+
+
+option.classList.toggle("selected");
+
+
+let value=option.textContent;
+
+
+if(selectedGenres.includes(value)){
+
+    selectedGenres =
+    selectedGenres.filter(x=>x!==value);
+
+}
+
+else{
+
+    selectedGenres.push(value);
+
+}
+
+
+};
+
+
+});
+
+
+
+
+
+document.querySelectorAll("#moods .option")
+.forEach(option=>{
+
+
+option.onclick=()=>{
+
+
+document
+.querySelectorAll("#moods .option")
+.forEach(x=>x.classList.remove("selected"));
+
+
+option.classList.add("selected");
+
+
+selectedMood=option.textContent;
+
+
+};
+
+
+});
+
+
+
+
+
+document.getElementById("continueBtn")
+.onclick=()=>{
+
+
+localStorage.setItem(
+    "genres",
+    JSON.stringify(selectedGenres)
+);
+
+
+localStorage.setItem(
+    "mood",
+    selectedMood
+);
+
+
+localStorage.setItem(
+    "artists",
+    document.getElementById("artists").value
+);
+
+
+
+window.location.href="home.html";
+
+
+};
+
+
+</script>
+
+
+</body>
+</html>
