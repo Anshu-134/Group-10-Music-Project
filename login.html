@@ -174,18 +174,28 @@
           credentials: 'include',
           body: JSON.stringify({ username, password })
         });
-        if (res.ok) { 
+        if (res.ok) {
 
     const data = await res.json();
 
-    // Save username from backend response
     localStorage.setItem("username", data.user);
 
-    // Existing users skip survey
-    localStorage.removeItem("newUser");
 
-    // Go to home page
-    window.location.href = "home.html";
+    // Check if this user already finished onboarding
+    const completed = localStorage.getItem("surveyCompleted");
+
+
+    if (completed === "true") {
+
+        // Existing user
+        window.location.href = "home.html";
+
+    } else {
+
+        // New user
+        window.location.href = "survey.html";
+
+    }
 
 }
           
