@@ -1,88 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create account — NicheTune</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #222220; color: #F5E8D5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #222220;
+      color: #F5E8D5;
+      font-family: system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+    }
 
     .left-panel {
-      width: 42%; background: #222220; border-right: 0.5px solid #3D3A2E;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 48px 40px; gap: 20px;
+      width: 42%;
+      background: #222220;
+      border-right: 0.5px solid #3D3A2E;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      gap: 20px;
     }
 
-    .vinyl-wrap { width: 150px; height: 150px; animation: spin 8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion: reduce) { .vinyl-wrap { animation: none; } }
+    .vinyl-wrap {
+      width: 150px;
+      height: 150px;
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .vinyl-wrap {
+        animation: none;
+      }
+    }
 
     .vinyl-outer {
-      width: 150px; height: 150px; border-radius: 50%;
-      background: conic-gradient(#1A1A18 0deg,#2A2A26 18deg,#1A1A18 36deg,#2A2A26 54deg,#1A1A18 72deg,#2A2A26 90deg,#1A1A18 108deg,#2A2A26 126deg,#1A1A18 144deg,#2A2A26 162deg,#1A1A18 180deg,#2A2A26 198deg,#1A1A18 216deg,#2A2A26 234deg,#1A1A18 252deg,#2A2A26 270deg,#1A1A18 288deg,#2A2A26 306deg,#1A1A18 324deg,#2A2A26 342deg,#1A1A18 360deg);
-      border: 2px solid #3D3A2E; display: flex; align-items: center; justify-content: center;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(#1A1A18 0deg, #2A2A26 18deg, #1A1A18 36deg, #2A2A26 54deg, #1A1A18 72deg, #2A2A26 90deg, #1A1A18 108deg, #2A2A26 126deg, #1A1A18 144deg, #2A2A26 162deg, #1A1A18 180deg, #2A2A26 198deg, #1A1A18 216deg, #2A2A26 234deg, #1A1A18 252deg, #2A2A26 270deg, #1A1A18 288deg, #2A2A26 306deg, #1A1A18 324deg, #2A2A26 342deg, #1A1A18 360deg);
+      border: 2px solid #3D3A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .vinyl-mid { width: 60px; height: 60px; border-radius: 50%; background: #4A5230; border: 2px solid #5C6640; display: flex; align-items: center; justify-content: center; }
-    .vinyl-center { width: 20px; height: 20px; border-radius: 50%; background: #3A4228; border: 1.5px solid #6B7848; }
 
-    .welcome-text { font-size: 18px; font-weight: 500; color: #F5D5A0; text-align: center; line-height: 1.4; }
-    .welcome-sub { font-size: 12px; color: #5C6640; text-align: center; line-height: 1.6; max-width: 220px; }
+    .vinyl-mid {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #4A5230;
+      border: 2px solid #5C6640;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vinyl-center {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #3A4228;
+      border: 1.5px solid #6B7848;
+    }
+
+    .welcome-text {
+      font-size: 18px;
+      font-weight: 500;
+      color: #F5D5A0;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .welcome-sub {
+      font-size: 12px;
+      color: #5C6640;
+      text-align: center;
+      line-height: 1.6;
+      max-width: 220px;
+    }
 
     .right-panel {
-      flex: 1; background: #F5E8D5; display: flex; flex-direction: column;
-      justify-content: center; padding: 48px 44px;
+      flex: 1;
+      background: #F5E8D5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 44px;
     }
 
-    .step-badge { font-size: 11px; font-weight: 500; color: #4A5230; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-    .form-title { font-size: 20px; font-weight: 500; color: #1A1A18; margin-bottom: 24px; }
+    .step-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: #4A5230;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
 
-    .field { margin-bottom: 16px; }
-    label { font-size: 12px; color: #B04030; letter-spacing: 0.04em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+    .form-title {
+      font-size: 20px;
+      font-weight: 500;
+      color: #1A1A18;
+      margin-bottom: 24px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-size: 12px;
+      color: #B04030;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 5px;
+    }
+
     input {
-      width: 100%; background: #fff; border: 0.5px solid #D4846A;
-      border-radius: 6px; padding: 10px 14px; font-size: 14px;
-      color: #1A1A18; outline: none; transition: border-color 0.15s;
+      width: 100%;
+      background: #fff;
+      border: 0.5px solid #D4846A;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #1A1A18;
+      outline: none;
+      transition: border-color 0.15s;
     }
-    input:focus { border-color: #C03820; }
-    input.invalid { border-color: #C03820; }
 
-    .field-error { font-size: 12px; color: #C03820; min-height: 16px; margin-top: 4px; }
+    input:focus {
+      border-color: #C03820;
+    }
+
+    input.invalid {
+      border-color: #C03820;
+    }
+
+    .field-error {
+      font-size: 12px;
+      color: #C03820;
+      min-height: 16px;
+      margin-top: 4px;
+    }
 
     .global-error {
-      background: rgba(192,56,32,0.08); border: 0.5px solid rgba(192,56,32,0.4);
-      border-radius: 6px; padding: 10px 14px; font-size: 13px;
-      color: #C03820; margin-bottom: 16px; display: none;
+      background: rgba(192, 56, 32, 0.08);
+      border: 0.5px solid rgba(192, 56, 32, 0.4);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #C03820;
+      margin-bottom: 16px;
+      display: none;
     }
 
     .btn-primary {
-      width: 100%; background: #C03820; border: none; border-radius: 6px;
-      padding: 11px; font-size: 14px; font-weight: 500; color: #F5E8D5;
-      cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+      width: 100%;
+      background: #C03820;
+      border: none;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #F5E8D5;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      margin-top: 4px;
     }
-    .btn-primary:hover { opacity: 0.88; }
-    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    .divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 0.5px; background: #D4846A; }
-    .divider span { font-size: 11px; color: #B04030; }
+    .btn-primary:hover {
+      opacity: 0.88;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 0.5px;
+      background: #D4846A;
+    }
+
+    .divider span {
+      font-size: 11px;
+      color: #B04030;
+    }
 
     .btn-secondary {
-      width: 100%; background: transparent; border: 0.5px solid #D4846A;
-      border-radius: 6px; padding: 10px; font-size: 14px; color: #4A5230;
-      cursor: pointer; text-align: center; text-decoration: none; display: block;
+      width: 100%;
+      background: transparent;
+      border: 0.5px solid #D4846A;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
+      color: #4A5230;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: block;
       transition: border-color 0.15s;
     }
-    .btn-secondary:hover { border-color: #4A5230; color: #4A5230; }
+
+    .btn-secondary:hover {
+      border-color: #4A5230;
+      color: #4A5230;
+    }
 
     @media (max-width: 768px) {
-      body { flex-direction: column; }
-      .left-panel { width: 100%; border-right: none; border-bottom: 0.5px solid #3D3A2E; padding: 40px 24px; }
-      .right-panel { padding: 40px 24px; }
+      body {
+        flex-direction: column;
+      }
+
+      .left-panel {
+        width: 100%;
+        border-right: none;
+        border-bottom: 0.5px solid #3D3A2E;
+        padding: 40px 24px;
+      }
+
+      .right-panel {
+        padding: 40px 24px;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <div class="left-panel">
@@ -136,7 +308,7 @@
     const BASE_URL = 'https://group-10-backend.onrender.com';
 
     function clearErrors() {
-      ['username','password','confirm','email'].forEach(id => {
+      ['username', 'password', 'confirm', 'email'].forEach(id => {
         document.getElementById(`${id}-error`).textContent = '';
         document.getElementById(id).classList.remove('invalid');
       });
@@ -182,7 +354,7 @@
           credentials: 'include',
           body: JSON.stringify({ username, email, password })
         });
-        if (res.ok) { window.location.href = 'genres.html'; }
+        if (res.ok) { window.location.href = 'survey.html'; }
         else if (res.status === 409) { showGlobalError('That username or email is already taken.'); }
         else if (res.status === 400) { showGlobalError('Please fill in all required fields.'); }
         else { showGlobalError('Something went wrong. Please try again.'); }
@@ -191,4 +363,5 @@
     }
   </script>
 </body>
+
 </html>
