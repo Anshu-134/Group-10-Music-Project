@@ -25,7 +25,7 @@ app.config['SESSION_COOKIE_SECURE'] = True
 
 CORS(
     app,
-    origins=['https://team-10-self.vercel.app'],
+    origins=['https://team-10-self.vercel.app', 'https://team-10-4oaplvzbq-team-10-music-project1.vercel.app'],
     supports_credentials=True,
 )
 
