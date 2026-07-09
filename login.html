@@ -181,10 +181,14 @@
     // Save username from backend response
     localStorage.setItem("username", data.user);
 
-    // Go to survey
-    window.location.href = 'survey.html';
+    // Existing users skip survey
+    localStorage.removeItem("newUser");
+
+    // Go to home page
+    window.location.href = "home.html";
 
 }
+          
 else if (res.status === 401) { 
 
     showGlobalError('Incorrect username or password.');
