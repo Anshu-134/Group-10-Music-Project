@@ -1,101 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Profile — TBH</title>
 
+
 <style>
+
 body {
-    background: #1c1a17;
-    color: #efe6d2;
-    font-family: Inter, sans-serif;
+
+    background:#1c1a17;
+    color:#efe6d2;
+    font-family:Inter, Arial, sans-serif;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     height:100vh;
+    margin:0;
+
 }
+
 
 .profile-card {
+
     background:#efe6d2;
     color:#211f1b;
+
     padding:40px;
+
     border-radius:28px;
+
     width:350px;
+
     text-align:center;
+
 }
+
 
 h1 {
-    font-family: Georgia, serif;
+
+    font-family:Georgia, serif;
+
+    font-size:32px;
+
+    margin-bottom:30px;
+
 }
+
 
 .stat {
+
     margin:20px 0;
+
     padding:15px;
+
     background:#f7f1e3;
+
     border-radius:15px;
+
+    font-size:18px;
+
 }
 
+
 button {
+
     background:#6b6f38;
+
     color:white;
+
     border:none;
+
     padding:12px 25px;
+
     border-radius:999px;
+
     cursor:pointer;
+
+    font-size:16px;
+
 }
+
+
+button:hover {
+
+    opacity:.85;
+
+}
+
+
 </style>
 
 </head>
 
 
+
 <body>
+
 
 <div class="profile-card">
 
+
 <h1 id="username">
-Username
+Loading...
 </h1>
 
 
+
 <div class="stat">
+
 🎵 Liked Songs:
+
 <br>
-<span id="likedCount">0</span>
+
+<span id="likedCount">
+0
+</span>
+
 </div>
+
+
 
 
 <div class="stat">
+
 🎧 Favorite Genre:
+
 <br>
-<span id="genre">Not selected</span>
+
+<span id="genre">
+Not selected
+</span>
+
 </div>
+
+
 
 
 <button onclick="goBack()">
+
 Back to Discover
+
 </button>
 
 
+
 </div>
+
+
 
 
 <script>
 
+
 function goBack(){
+
     window.location.href="home.html";
+
 }
 
 
-// Later you can replace these with backend data
 
-document.getElementById("username").textContent =
-    localStorage.getItem("username") || "Music Explorer";
+// Load username from login
+
+const username = localStorage.getItem("username");
+
+
+
+if(username){
+
+    document.getElementById("username").textContent = username;
+
+}
+
+else{
+
+    document.getElementById("username").textContent = "Music Explorer";
+
+}
+
+
+
+// Temporary values until connected to history API
+
+async function loadProfile(){
+
+
+    try {
+
+
+        const response = await fetch(
+            "https://group-10-backend.onrender.com/history",
+            {
+                credentials:"include"
+            }
+        );
+
+
+        if(response.ok){
+
+
+            const data = await response.json();
+
+
+            // Count liked songs
+
+            const likedSongs = data.history.filter(
+                song => song.direction === "like"
+            ).length;
+
+
+
+            document.getElementById("likedCount").textContent =
+                likedSongs;
+
+
+        }
+
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+
+}
+
+
+
+loadProfile();
+
 
 
 </script>
 
 
+
 </body>
+
 </html>
