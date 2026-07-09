@@ -25,7 +25,7 @@ app.config['SESSION_COOKIE_SECURE'] = True
 
 CORS(
     app,
-    origins=['https://team-10-self.vercel.app'],
+    origins=['https://anshu-134.github.io'],
     supports_credentials=True,
 )
 
