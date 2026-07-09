@@ -174,12 +174,38 @@
           credentials: 'include',
           body: JSON.stringify({ username, password })
         });
-        if (res.ok) { window.location.href = 'survey.html'; }
-        else if (res.status === 401) { showGlobalError('Incorrect username or password.'); }
-        else if (res.status === 400) { showGlobalError('Please fill in all fields.'); }
-        else { showGlobalError('Something went wrong. Please try again.'); }
-      } catch { showGlobalError('Could not connect to the server. Check your connection.'); }
-      finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+        if (res.ok) { 
+
+    const data = await res.json();
+
+    // Save username from backend response
+    localStorage.setItem("username", data.user);
+
+    // Go to survey
+    window.location.href = 'survey.html';
+
+}
+else if (res.status === 401) { 
+
+    showGlobalError('Incorrect username or password.');
+
+}
+else if (res.status === 400) { 
+
+    showGlobalError('Please fill in all fields.');
+
+}
+else { 
+
+    showGlobalError('Something went wrong. Please try again.');
+
+}
+      } catch (err) {
+        showGlobalError('Network error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign in';
+      }
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
