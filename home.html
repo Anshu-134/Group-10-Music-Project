@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discover — Find Your Next Favorite Track</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --charcoal: #1c1a17;
+    --charcoal-2: #141210;
+    --charcoal-soft: #2a2723;
+    --cream: #efe6d2;
+    --cream-light: #f7f1e3;
+    --rust: #c1502e;
+    --rust-dark: #9c3d22;
+    --olive: #6b6f38;
+    --olive-dark: #565933;
+    --text-cream: #f2e2b8;
+    --text-dark: #211f1b;
+    --text-muted: #948a68;
+    --text-body: #6b6455;
+
+    --radius-lg: 28px;
+    --radius-md: 16px;
+    --shadow-card: 0 30px 60px -20px rgba(0,0,0,0.55), 0 10px 20px -10px rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html, body{
+    height: 100%;
+  }
+
+  body{
+    background:
+      radial-gradient(circle at 15% 10%, rgba(107,111,56,0.15), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(193,80,46,0.12), transparent 50%),
+      var(--charcoal);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px clamp(20px, 5vw, 56px);
+  }
+
+  .brand{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-mark{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background:
+      repeating-conic-gradient(var(--charcoal-2) 0deg 6deg, var(--charcoal-soft) 6deg 12deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-mark::after{
+    content:"";
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--olive);
+    box-shadow: inset 0 0 0 3px var(--charcoal-2);
+  }
+
+  .brand-name{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+    color: var(--text-cream);
+  }
+
+  .logout-btn{
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-cream);
+    background: transparent;
+    border: 1.5px solid rgba(242, 226, 184, 0.35);
+    border-radius: 999px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  }
+  .logout-btn:hover{
+    background: rgba(242, 226, 184, 0.08);
+    border-color: rgba(242, 226, 184, 0.6);
+  }
+  .logout-btn:active{ transform: scale(0.97); }
+
+  .top-actions{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.profile-btn{
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-cream);
+    background:transparent;
+    border:1.5px solid rgba(242,226,184,0.35);
+    border-radius:999px;
+    padding:10px 20px;
+    cursor:pointer;
+    transition:background 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-btn:hover{
+    background:rgba(242,226,184,0.08);
+    border-color:rgba(242,226,184,0.6);
+}
+
+  /* ---------- Main stage ---------- */
+  main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 20px 40px;
+  }
+
+  .tagline{
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 26px;
+  }
+
+  /* ---------- Card stack ---------- */
+  .stack{
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    height: min(600px, 72vh);
+  }
+
+  .card{
+    position: absolute;
+    inset: 0;
+    background: var(--cream);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--text-dark);
+  }
+
+  /* peeking cards behind the active one, purely decorative */
+  .card.behind-1{
+    transform: scale(0.96) translateY(14px);
+    opacity: 0.75;
+    z-index: 1;
+  }
+  .card.behind-2{
+    transform: scale(0.92) translateY(26px);
+    opacity: 0.45;
+    z-index: 0;
+  }
+
+  .card.active{
+    z-index: 2;
+    cursor: grab;
+    touch-action: pan-y;
+    transition: transform 0.35s cubic-bezier(.2,.7,.3,1), opacity 0.35s ease;
+  }
+  .card.active.dragging{ transition: none; }
+  .card.active.grabbing{ cursor: grabbing; }
+
+  .card.fly-left{ transform: translate(-140%, -10%) rotate(-18deg) !important; opacity: 0; }
+  .card.fly-right{ transform: translate(140%, -10%) rotate(18deg) !important; opacity: 0; }
+
+  /* ---------- Album artwork / vinyl signature element ---------- */
+  .art-wrap{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(160deg, var(--charcoal-soft), var(--charcoal-2));
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  /* PLACEHOLDER: JS sets this element's background-image to the fetched album artwork URL */
+  .art-image{
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--charcoal-soft);
+  }
+
+  .genre-pill{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 3;
+    background: rgba(28, 26, 23, 0.65);
+    backdrop-filter: blur(6px);
+    color: var(--text-cream);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 226, 184, 0.25);
+  }
+
+  /* small spinning vinyl disc, echoes the login page's record mark */
+  .vinyl{
+    position: absolute;
+    bottom: -34px;
+    right: -34px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background:
+      repeating-conic-gradient(var(--charcoal-2) 0deg 4deg, #262320 4deg 8deg);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 6s linear infinite;
+  }
+  .vinyl::after{
+    content:"";
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--olive);
+    box-shadow: inset 0 0 0 4px var(--charcoal-2);
+  }
+  @keyframes spin{ from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
+
+  /* ---------- Track info ---------- */
+  .track-info{
+    padding: 20px 22px 8px;
+  }
+
+  /* PLACEHOLDER: JS sets textContent from fetched song title */
+  .song-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  /* PLACEHOLDER: JS sets textContent from fetched artist name */
+  .artist-name{
+    font-size: 0.98rem;
+    color: var(--text-body);
+    font-weight: 500;
+  }
+
+  /* ---------- SoundCloud embed ---------- */
+  .player-wrap{
+    padding: 14px 22px 0;
+  }
+
+  /* PLACEHOLDER: JS sets this iframe's src to the SoundCloud embed URL for the fetched track,
+     e.g. https://w.soundcloud.com/player/?url=<encoded-track-url>&color=%23c1502e&auto_play=false */
+  #soundcloud-embed{
+    width: 100%;
+    height: 88px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: rgba(33, 31, 27, 0.06);
+  }
+
+  .player-placeholder-note{
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    margin-top: 6px;
+    display: none; /* shown by JS only if no track is loaded yet */
+  }
+
+  /* ---------- Action buttons ---------- */
+  .actions{
+    position: absolute;
+    left: -90px;
+    right: -90px;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+
+.dislike-btn{
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+}
+
+
+.like-btn{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+}
+
+
+.undo-btn{
+    position: absolute;
+    left: 50%;
+    bottom: -80px;
+    transform: translateX(-50%);
+    pointer-events: auto;
+
+  }
+
+  .action-btn{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 22px -8px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .action-btn:hover{ transform: translateY(-3px); }
+  .action-btn:active{ transform: scale(0.92); }
+
+  .action-btn svg{ width: 26px; height: 26px; }
+
+  .dislike-btn{
+    background: linear-gradient(160deg, var(--rust), var(--rust-dark));
+  }
+  .dislike-btn svg{ stroke: var(--cream-light); }
+
+  .like-btn{
+    background: linear-gradient(160deg, var(--olive), var(--olive-dark));
+  }
+  .like-btn svg{ stroke: var(--cream-light); }
+
+  .undo-btn{
+    width: 46px;
+    height: 46px;
+    background: var(--cream-light);
+    border: 1.5px solid rgba(33,31,27,0.12);
+  }
+  .undo-btn svg{ width: 18px; height: 18px; stroke: var(--text-body); }
+
+  /* ---------- Empty state (shown by JS when recommendations run out) ---------- */
+  .empty-state{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 40px;
+    gap: 14px;
+  }
+  .empty-state h2{
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+  }
+  .empty-state p{
+    color: var(--text-body);
+    font-size: 0.9rem;
+    max-width: 260px;
+  }
+  .empty-state button{
+    margin-top: 10px;
+    background: var(--rust);
+    color: var(--cream-light);
+    border: none;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 480px){
+    .stack{ max-width: 100%; height: 74vh; }
+    .song-title{ font-size: 1.3rem; }
+    .action-btn{ width: 56px; height: 56px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .vinyl{ animation: none; }
+    .card.active{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <span class="brand-name">TBD</span>
+    </div>
+    <div class="top-actions">
+
+    <button class="profile-btn" id="profileBtn">
+    Profile
+</button>
+
+    <button class="logout-btn" id="logoutBtn">
+        Log out
+    </button>
+    </div>
+
+  </div>
+
+  <main>
+    <p class="tagline">Swipe right to like, left to pass</p>
+
+    <div class="stack" id="cardStack">
+
+      <!-- Decorative peeking cards -->
+      <div class="card behind-2"></div>
+      <div class="card behind-1"></div>
+
+      <!-- Active recommendation card -->
+      <div class="card active" id="activeCard">
+        <div class="art-wrap">
+          <!-- PLACEHOLDER: background-image set by JS from fetched artwork URL -->
+          <div class="art-image" id="artImage"></div>
+          <span class="genre-pill" id="genreLabel">Genre</span>
+          <div class="vinyl"></div>
+        </div>
+
+        <div class="track-info">
+          <h2 class="song-title" id="songTitle">Song title</h2>
+          <p class="artist-name" id="artistName">Artist name</p>
+        </div>
+
+        <div class="player-wrap">
+          <!-- PLACEHOLDER: JS injects the SoundCloud embed src for the current track -->
+          <iframe id="soundcloud-embed"
+                  scrolling="no"
+                  frameborder="no"
+                  allow="autoplay">
+          </iframe>
+          <p class="player-placeholder-note" id="playerNote">Player will appear once a track loads</p>
+        </div>
+
+        <div class="actions">
+          <button class="action-btn undo-btn" id="undoBtn" aria-label="Undo last swipe">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h9a5 5 0 0 1 0 10H7"/><path d="M7 5 3 10l4 5"/></svg>
+          </button>
+
+          <button class="action-btn dislike-btn" id="dislikeBtn" aria-label="Dislike this track">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+
+          <button class="action-btn like-btn" id="likeBtn" aria-label="Like this track">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.1 20.3s-7.1-4.4-9.6-9A5.4 5.4 0 0 1 12 5.5a5.4 5.4 0 0 1 9.5 5.8c-2.5 4.6-9.4 9-9.4 9z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Shown by JS when the recommendation queue is empty -->
+      <div class="empty-state" id="emptyState">
+        <h2>You're all caught up</h2>
+        <p>We're queuing up more tracks based on what you liked. Check back in a bit.</p>
+        <button id="refreshBtn">Refresh</button>
+      </div>
+
+    </div>
+  </main>
+
+<script>
+
+const BASE_URL = "https://group-10-backend.onrender.com";
+
+let currentSong = null;
+
+async function sendSwipe(direction){
+
+    if(!currentSong){
+        console.log("No current song");
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            `${BASE_URL}/swipe`,
+            {
+                method:"POST",
+
+                credentials:"include",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    song_id: currentSong.id,
+                    direction: direction
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+        console.log("Swipe response:", data);
+
+
+        await loadSong();
+
+
+    } catch(error){
+
+        console.error("SWIPE ERROR:", error);
+
+    }
+
+}
+
+
+document.getElementById("likeBtn")
+.addEventListener(
+    "click",
+    () => sendSwipe("like")
+);
+
+
+
+document.getElementById("dislikeBtn")
+.addEventListener(
+    "click",
+    () => sendSwipe("dislike")
+);
+
+
+const card = document.getElementById("activeCard");
+
+let startX = 0;
+let currentX = 0;
+let dragging = false;
+
+
+card.addEventListener("mousedown", startDrag);
+document.addEventListener("mousemove", drag);
+document.addEventListener("mouseup", endDrag);
+
+
+card.addEventListener("touchstart", startDrag, {passive:false});
+document.addEventListener("touchmove", drag, {passive:false});
+document.addEventListener("touchend", endDrag);
+
+
+
+function startDrag(e){
+
+    if(e.target.closest("button")){
+        return;
+    }
+
+    dragging = true;
+
+    startX = e.type.includes("touch")
+        ? e.touches[0].clientX
+        : e.clientX;
+
+    currentX = startX;
+
+    card.classList.add("dragging");
+}
+
+
+
+function drag(e){
+
+    if(!dragging){
+        return;
+    }
+
+    e.preventDefault();
+
+    currentX = e.type.includes("touch")
+        ? e.touches[0].clientX
+        : e.clientX;
+
+
+    let distance = currentX - startX;
+
+
+    card.style.transform =
+        `translateX(${distance}px) rotate(${distance * 0.05}deg)`;
+}
+
+
+
+function endDrag(){
+
+    if(!dragging){
+        return;
+    }
+
+
+    dragging = false;
+
+    card.classList.remove("dragging");
+
+
+    let distance = currentX - startX;
+
+
+
+    if(distance > 100){
+
+        card.classList.add("fly-right");
+        sendSwipe("like");
+
+    }
+
+
+    else if(distance < -100){
+
+        card.classList.add("fly-left");
+        sendSwipe("dislike");
+
+    }
+
+
+    else{
+
+        card.style.transform = "";
+
+    }
+  }
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    console.log("LOGOUT CLICKED");
+    window.location.href = "login.html";
+});
+
+
+document.getElementById("profileBtn")
+.addEventListener("click", () => {
+    window.location.href = "profile.html";
+});
+
+async function loadSong(){
+
+    try {
+
+        console.log("Loading song...");
+
+        const response = await fetch(
+            `${BASE_URL}/recommend`,
+            {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        console.log("Status:", response.status);
+
+        const data = await response.json();
+
+        console.log("Backend response:", data);
+
+
+        if(!data.song){
+            console.log("No song returned:", data);
+            return;
+        }
+
+        currentSong = data.song;
+
+        document.getElementById("songTitle").textContent =
+            currentSong.title || "Unknown Title";
+
+        document.getElementById("artistName").textContent =
+            currentSong.artist || "Unknown Artist";
+
+        document.getElementById("genreLabel").textContent =
+            currentSong.genre || "Unknown";
+
+
+        if(currentSong.artwork_url){
+            document.getElementById("artImage").style.backgroundImage =
+                `url("${currentSong.artwork_url}")`;
+        }
+
+
+        document.getElementById("soundcloud-embed").src =
+            `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentSong.permalink_url)}`;
+
+
+        console.log("Loaded:", currentSong);
+
+
+    } catch(error){
+
+        console.error("LOAD SONG ERROR:", error);
+
+    }
+}
+
+loadSong();
+
+</script>
+</body>
+</html>

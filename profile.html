@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profile — TBH</title>
+
+<style>
+body {
+    background: #1c1a17;
+    color: #efe6d2;
+    font-family: Inter, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.profile-card {
+    background:#efe6d2;
+    color:#211f1b;
+    padding:40px;
+    border-radius:28px;
+    width:350px;
+    text-align:center;
+}
+
+h1 {
+    font-family: Georgia, serif;
+}
+
+.stat {
+    margin:20px 0;
+    padding:15px;
+    background:#f7f1e3;
+    border-radius:15px;
+}
+
+button {
+    background:#6b6f38;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:999px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<div class="profile-card">
+
+<h1 id="username">
+Username
+</h1>
+
+
+<div class="stat">
+🎵 Liked Songs:
+<br>
+<span id="likedCount">0</span>
+</div>
+
+
+<div class="stat">
+🎧 Favorite Genre:
+<br>
+<span id="genre">Not selected</span>
+</div>
+
+
+<button onclick="goBack()">
+Back to Discover
+</button>
+
+
+</div>
+
+
+<script>
+
+function goBack(){
+    window.location.href="home.html";
+}
+
+
+// Later you can replace these with backend data
+
+document.getElementById("username").textContent =
+    localStorage.getItem("username") || "Music Explorer";
+
+
+</script>
+
+
+</body>
+</html>
