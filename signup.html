@@ -354,7 +354,14 @@
           credentials: 'include',
           body: JSON.stringify({ username, email, password })
         });
-        if (res.ok) { window.location.href = 'survey.html'; }
+        if (res.ok) {
+
+    const data = await res.json();
+    localStorage.setItem("username", data.user);
+    localStorage.setItem("newUser", "true");
+    window.location.href = "survey.html";
+
+}
         else if (res.status === 409) { showGlobalError('That username or email is already taken.'); }
         else if (res.status === 400) { showGlobalError('Please fill in all required fields.'); }
         else { showGlobalError('Something went wrong. Please try again.'); }
