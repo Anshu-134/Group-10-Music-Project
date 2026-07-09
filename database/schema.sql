@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS "users" (
     "onboarding_genres" TEXT,
     "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "latest_swipe_song_id" INTEGER,
+    "fav_artists" TEXT,
+    "fav_moods" TEXT,
     FOREIGN KEY ("latest_swipe_song_id") REFERENCES "songs"("song_id")
 );
 
