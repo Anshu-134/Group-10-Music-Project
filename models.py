@@ -41,6 +41,8 @@ class User(UserMixin, db.Model):
     onboarding_genres = db.Column(db.Text)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     latest_swipe_song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'))
+    fav_artists = db.Column(db.Text)
+    fav_moods = db.Column(db.Text)
 
     def get_id(self):
         # flask-login expects the id column to be named `id`; ours is `user_id`.

@@ -105,7 +105,6 @@ def register():
         username=data['username'],
         email=data['email'],
         password_hash=generate_password_hash(data['password']),
-        onboarding_genres=data.get('onboarding_genres'),
     )
     db.session.add(user)
     try:
@@ -137,6 +136,26 @@ def login():
 def logout():
     logout_user()
     return jsonify({'status': 'ok', 'message': 'logged out'})
+
+
+@app.route('/survey', methods=['POST'])
+@login_required
+def survey():
+    if current_user.fav_moods:
+        return jsonify({'status': 'error', 'message': 'survey already submitted'}), 409
+
+    data = request.get_json()
+    genres = data.get('genres') if data else None
+    mood = data.get('mood') if data else None
+    if not genres or not mood:
+        return jsonify({'status': 'error', 'message': 'genres and mood required'}), 400
+
+    current_user.onboarding_genres = ','.join(genres) if isinstance(genres, list) else genres
+    current_user.fav_moods = mood
+    current_user.fav_artists = data.get('artists') or None
+    db.session.commit()
+
+    return jsonify({'status': 'ok', 'message': 'survey saved'})
 
 
 @app.route('/song', methods=['GET'])
