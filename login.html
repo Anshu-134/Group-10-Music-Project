@@ -174,7 +174,7 @@
           credentials: 'include',
           body: JSON.stringify({ username, password })
         });
-        if (res.ok) { window.location.href = 'home.html'; }
+        if (res.ok) { window.location.href = 'survey.html'; }
         else if (res.status === 401) { showGlobalError('Incorrect username or password.'); }
         else if (res.status === 400) { showGlobalError('Please fill in all fields.'); }
         else { showGlobalError('Something went wrong. Please try again.'); }
