@@ -273,5 +273,28 @@ def history():
     })
 
 
+@app.route('/profile', methods=['GET'])
+@login_required
+def profile():
+    liked_count = Swipe.query.filter_by(user_id=current_user.user_id, like=True).count()
+
+    top_genre = (
+        db.session.query(Song.genre)
+        .join(Swipe, Swipe.song_id == Song.song_id)
+        .filter(Swipe.user_id == current_user.user_id, Swipe.like.is_(True), Song.genre.isnot(None))
+        .group_by(Song.genre)
+        .order_by(db.func.count(Swipe.swipe_id).desc())
+        .first()
+    )
+    favorite_genre = top_genre[0] if top_genre else current_user.onboarding_genres
+
+    return jsonify({
+        'status': 'ok',
+        'username': current_user.username,
+        'liked_count': liked_count,
+        'favorite_genre': favorite_genre,
+    })
+
+
 if __name__ == '__main__':
     app.run(debug=True)
