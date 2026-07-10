@@ -293,6 +293,7 @@ def profile():
         'username': current_user.username,
         'liked_count': liked_count,
         'favorite_genre': favorite_genre,
+        'joined_at': current_user.created_at.isoformat(),
     })
 
 
