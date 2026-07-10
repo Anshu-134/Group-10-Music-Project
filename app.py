@@ -193,7 +193,7 @@ def _get_or_create_song(soundcloud_id):
         soundcloud_id=str(track.id),
         title=track.title,
         artist_id=artist.artist_id,
-        genre=track.genre,
+        genre=track.genre or None,
         duration=track.duration,
     )
     db.session.add(song)
@@ -281,7 +281,7 @@ def profile():
     top_genre = (
         db.session.query(Song.genre)
         .join(Swipe, Swipe.song_id == Song.song_id)
-        .filter(Swipe.user_id == current_user.user_id, Swipe.like.is_(True), Song.genre.isnot(None))
+        .filter(Swipe.user_id == current_user.user_id, Swipe.like.is_(True), Song.genre.isnot(None), Song.genre != '')
         .group_by(Song.genre)
         .order_by(db.func.count(Swipe.swipe_id).desc())
         .first()
