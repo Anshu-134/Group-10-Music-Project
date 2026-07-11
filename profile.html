@@ -6,96 +6,380 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profile — TBH</title>
+<title>Profile — NicheTune</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 <style>
 
-body {
 
-    background:#1c1a17;
-    color:#efe6d2;
-    font-family:Inter, Arial, sans-serif;
+:root{
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+--charcoal:#1c1a17;
+--charcoal-2:#141210;
+--charcoal-soft:#2a2723;
 
-    height:100vh;
-    margin:0;
+--cream:#efe6d2;
+--cream-light:#f7f1e3;
 
-}
+--rust:#c1502e;
+--rust-dark:#9c3d22;
 
+--olive:#6b6f38;
+--olive-dark:#565933;
 
-.profile-card {
-
-    background:#efe6d2;
-    color:#211f1b;
-
-    padding:40px;
-
-    border-radius:28px;
-
-    width:350px;
-
-    text-align:center;
+--text-cream:#f2e2b8;
+--text-dark:#211f1b;
+--text-muted:#948a68;
 
 }
 
 
-h1 {
 
-    font-family:Georgia, serif;
+*{
 
-    font-size:32px;
-
-    margin-bottom:30px;
-
-}
-
-
-.stat {
-
-    margin:20px 0;
-
-    padding:15px;
-
-    background:#f7f1e3;
-
-    border-radius:15px;
-
-    font-size:18px;
+box-sizing:border-box;
+margin:0;
+padding:0;
 
 }
 
 
-button {
 
-    background:#6b6f38;
+body{
 
-    color:white;
+min-height:100vh;
 
-    border:none;
+background:
+radial-gradient(circle at 15% 10%, rgba(107,111,56,.15), transparent 45%),
+radial-gradient(circle at 85% 90%, rgba(193,80,46,.12), transparent 50%),
+var(--charcoal);
 
-    padding:12px 25px;
+font-family:'Inter',sans-serif;
 
-    border-radius:999px;
-
-    cursor:pointer;
-
-    font-size:16px;
+color:var(--cream);
 
 }
 
 
-button:hover {
 
-    opacity:.85;
+/* ---------- TOP BAR ---------- */
+
+
+.topbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:22px clamp(20px,5vw,56px);
 
 }
+
+
+
+.brand{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+}
+
+
+
+.brand-mark{
+
+width:34px;
+
+height:34px;
+
+border-radius:50%;
+
+
+background:
+repeating-conic-gradient(
+var(--charcoal-2) 0deg 6deg,
+var(--charcoal-soft) 6deg 12deg
+);
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+
+
+.brand-mark::after{
+
+content:"";
+
+width:12px;
+
+height:12px;
+
+border-radius:50%;
+
+background:var(--olive);
+
+box-shadow:inset 0 0 0 3px var(--charcoal-2);
+
+}
+
+
+
+
+.brand-name{
+
+font-family:'Fraunces',serif;
+
+font-size:1.15rem;
+
+font-weight:600;
+
+color:var(--text-cream);
+
+}
+
+
+
+
+.top-actions{
+
+display:flex;
+
+gap:12px;
+
+align-items:center;
+
+}
+
+
+
+.profile-btn,
+.logout-btn{
+
+
+font-family:'Inter',sans-serif;
+
+font-size:.78rem;
+
+font-weight:600;
+
+letter-spacing:.06em;
+
+text-transform:uppercase;
+
+color:var(--text-cream);
+
+background:transparent;
+
+border:1.5px solid rgba(242,226,184,.35);
+
+border-radius:999px;
+
+padding:10px 20px;
+
+cursor:pointer;
+
+}
+
+
+
+.profile-btn:hover,
+.logout-btn:hover{
+
+background:rgba(242,226,184,.08);
+
+}
+
+
+
+
+/* ---------- PROFILE CARD ---------- */
+
+
+main{
+
+
+display:flex;
+
+justify-content:center;
+
+padding:50px 20px;
+
+}
+
+
+
+.profile-card{
+
+
+width:420px;
+
+background:var(--cream);
+
+color:var(--text-dark);
+
+border-radius:28px;
+
+padding:35px;
+
+box-shadow:
+0 30px 60px -20px rgba(0,0,0,.55);
+
+}
+
+
+
+
+.profile-title{
+
+
+font-family:'Fraunces',serif;
+
+font-size:2rem;
+
+margin-bottom:8px;
+
+}
+
+
+
+.profile-sub{
+
+font-size:.9rem;
+
+color:var(--text-muted);
+
+margin-bottom:30px;
+
+}
+
+
+
+.avatar{
+
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+background:var(--olive);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:40px;
+
+margin-bottom:30px;
+
+}
+
+
+
+
+.info-card{
+
+
+background:white;
+
+border-radius:16px;
+
+padding:18px;
+
+margin-bottom:15px;
+
+border:1px solid rgba(193,80,46,.3);
+
+}
+
+
+
+.label{
+
+
+font-size:.7rem;
+
+font-weight:600;
+
+letter-spacing:.08em;
+
+text-transform:uppercase;
+
+color:var(--rust);
+
+}
+
+
+
+.value{
+
+
+font-family:'Fraunces',serif;
+
+font-size:1.25rem;
+
+margin-top:5px;
+
+}
+
+
+
+
+.back-btn{
+
+
+width:100%;
+
+margin-top:15px;
+
+padding:13px;
+
+border:none;
+
+border-radius:999px;
+
+background:var(--rust);
+
+color:var(--cream-light);
+
+font-weight:600;
+
+cursor:pointer;
+
+}
+
+
+
+.back-btn:hover{
+
+background:var(--rust-dark);
+
+}
+
+
 
 
 </style>
+
 
 </head>
 
@@ -104,185 +388,284 @@ button:hover {
 <body>
 
 
+
+<!-- SAME TOP BAR AS HOME -->
+
+
+<div class="topbar">
+
+
+<div class="brand">
+
+<div class="brand-mark"></div>
+
+<span class="brand-name">
+TBD
+</span>
+
+</div>
+
+
+
+<div class="top-actions">
+
+
+<button class="profile-btn">
+Profile
+</button>
+
+
+<button class="logout-btn" id="logoutBtn">
+Log out
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<main>
+
+
 <div class="profile-card">
 
 
-<h1 id="username">
-Loading...
+<h1 class="profile-title">
+Your Profile
 </h1>
 
 
+<p class="profile-sub">
+Your NicheTune music identity
+</p>
 
-<div class="stat">
 
-🎵 Liked Songs:
 
-<br>
+<div class="avatar">
+🎵
+</div>
 
-<span id="likedCount">
-0
-</span>
+
+
+
+<div class="info-card">
+
+<div class="label">
+Username
+</div>
+
+<div class="value" id="username">
+Loading...
+</div>
 
 </div>
 
 
 
 
-<div class="stat">
 
-🎧 Favorite Genre:
+<div class="info-card">
 
-<br>
+<div class="label">
+Favorite Genre
+</div>
 
-<span id="genre">
-Not selected
-</span>
+<div class="value" id="genre">
+Loading...
+</div>
 
 </div>
 
 
 
 
-<button onclick="goBack()">
+
+<div class="info-card">
+
+<div class="label">
+Liked Songs
+</div>
+
+<div class="value" id="likes">
+Loading...
+</div>
+
+</div>
+
+
+
+
+
+<div class="info-card">
+
+<div class="label">
+Member Since
+</div>
+
+<div class="value" id="joined">
+Loading...
+</div>
+
+</div>
+
+
+
+
+
+<button class="back-btn" onclick="window.location.href='home.html'">
+
 Back to Discover
+
 </button>
 
-<br><br>
-
-<button onclick="logout()">
-Logout
-</button>
 
 
 
 </div>
+
+
+</main>
+
+
 
 
 
 
 <script>
 
-const BASE_URL = "https://group-10-backend.onrender.com";
 
-
-// Show username
-
-const username = localStorage.getItem("username");
-
-if(username){
-
-    document.getElementById("username").textContent = username;
-
-}
-else{
-
-    document.getElementById("username").textContent = "Music Explorer";
-
-}
+const BASE_URL =
+"https://group-10-backend.onrender.com";
 
 
 
 
-// Load history from database
+// GET PROFILE API
+
 
 async function loadProfile(){
 
 
-    try{
+try{
 
 
-        const response = await fetch(
-            `${BASE_URL}/history`,
-            {
-                credentials:"include"
-            }
-        );
+const response = await fetch(
 
+`${BASE_URL}/profile`,
 
-        // if not logged in
+{
 
-        if(response.status === 401){
+method:"GET",
 
-            window.location.href="login.html";
-            return;
+credentials:"include"
 
-        }
+}
+
+);
 
 
 
-        const data = await response.json();
+if(response.status === 401){
 
+window.location.href="login.html";
 
-        const history = data.history;
+return;
 
-
-
-        // count likes
-
-        const likedSongs = history.filter(
-            song => song.direction === "like"
-        );
+}
 
 
 
-        document.getElementById("likedCount").textContent =
-            likedSongs.length;
+
+const data = await response.json();
 
 
 
-        // favorite genre placeholder
-
-        const genre = localStorage.getItem("genre");
-
-
-        if(genre){
-
-            document.getElementById("genre").textContent = genre;
-
-        }
+console.log("PROFILE DATA:", data);
 
 
 
-    }
+document.getElementById("username").textContent =
+data.username;
 
 
-    catch(error){
 
-        console.log(error);
+document.getElementById("genre").textContent =
+data.favorite_genre || "No favorite genre";
 
-    }
+
+
+document.getElementById("likes").textContent =
+`${data.liked_count} songs`;
+
+
+
+document.getElementById("joined").textContent =
+new Date(data.joined_at)
+.toLocaleDateString();
+
 
 
 }
+
+catch(error){
+
+console.error(
+"PROFILE ERROR:",
+error
+);
+
+}
+
+
+
+}
+
+
+
+
+// LOGOUT API
+
+
+document
+.getElementById("logoutBtn")
+.addEventListener(
+"click",
+async()=>{
+
+
+await fetch(
+
+`${BASE_URL}/logout`,
+
+{
+
+method:"POST",
+
+credentials:"include"
+
+}
+
+);
+
+
+
+window.location.href="login.html";
+
+
+});
+
+
 
 
 
 loadProfile();
 
-
-
-
-
-// logout API
-
-async function logout(){
-
-
-    await fetch(
-        `${BASE_URL}/logout`,
-        {
-            method:"POST",
-            credentials:"include"
-        }
-    );
-
-
-    localStorage.removeItem("username");
-
-    window.location.href="login.html";
-
-
-}
 
 
 </script>
