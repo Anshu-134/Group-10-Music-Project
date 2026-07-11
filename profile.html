@@ -16,7 +16,6 @@
 
 <style>
 
-
 :root{
 
 --charcoal:#1c1a17;
@@ -39,12 +38,16 @@
 }
 
 
-
 *{
-
 box-sizing:border-box;
 margin:0;
 padding:0;
+}
+
+
+html,body{
+
+height:100%;
 
 }
 
@@ -55,13 +58,21 @@ body{
 min-height:100vh;
 
 background:
+
 radial-gradient(circle at 15% 10%, rgba(107,111,56,.15), transparent 45%),
+
 radial-gradient(circle at 85% 90%, rgba(193,80,46,.12), transparent 50%),
+
 var(--charcoal);
+
+
+color:var(--cream);
 
 font-family:'Inter',sans-serif;
 
-color:var(--cream);
+display:flex;
+
+flex-direction:column;
 
 }
 
@@ -106,6 +117,7 @@ border-radius:50%;
 
 
 background:
+
 repeating-conic-gradient(
 var(--charcoal-2) 0deg 6deg,
 var(--charcoal-soft) 6deg 12deg
@@ -132,12 +144,14 @@ height:12px;
 
 border-radius:50%;
 
+
 background:var(--olive);
 
-box-shadow:inset 0 0 0 3px var(--charcoal-2);
+box-shadow:
+
+inset 0 0 0 3px var(--charcoal-2);
 
 }
-
 
 
 
@@ -155,14 +169,11 @@ color:var(--text-cream);
 
 
 
-
 .top-actions{
 
 display:flex;
 
 gap:12px;
-
-align-items:center;
 
 }
 
@@ -194,6 +205,8 @@ padding:10px 20px;
 
 cursor:pointer;
 
+transition:.2s;
+
 }
 
 
@@ -207,27 +220,35 @@ background:rgba(242,226,184,.08);
 
 
 
-
-/* ---------- PROFILE CARD ---------- */
+/* ---------- CENTER CONTENT ---------- */
 
 
 main{
 
 
+flex:1;
+
 display:flex;
 
 justify-content:center;
 
-padding:50px 20px;
+align-items:center;
+
+padding:20px;
 
 }
 
 
 
+/* ---------- PROFILE CARD ---------- */
+
+
 .profile-card{
 
 
-width:420px;
+width:440px;
+
+max-width:90vw;
 
 background:var(--cream);
 
@@ -235,13 +256,16 @@ color:var(--text-dark);
 
 border-radius:28px;
 
-padding:35px;
+padding:40px;
+
 
 box-shadow:
-0 30px 60px -20px rgba(0,0,0,.55);
+
+0 30px 60px -20px rgba(0,0,0,.55),
+
+0 10px 20px -10px rgba(0,0,0,.35);
 
 }
-
 
 
 
@@ -250,7 +274,7 @@ box-shadow:
 
 font-family:'Fraunces',serif;
 
-font-size:2rem;
+font-size:2.2rem;
 
 margin-bottom:8px;
 
@@ -260,11 +284,12 @@ margin-bottom:8px;
 
 .profile-sub{
 
+
 font-size:.9rem;
 
 color:var(--text-muted);
 
-margin-bottom:30px;
+margin-bottom:35px;
 
 }
 
@@ -273,13 +298,15 @@ margin-bottom:30px;
 .avatar{
 
 
-width:90px;
+width:100px;
 
-height:90px;
+height:100px;
 
 border-radius:50%;
 
+
 background:var(--olive);
+
 
 display:flex;
 
@@ -287,13 +314,17 @@ align-items:center;
 
 justify-content:center;
 
-font-size:40px;
 
-margin-bottom:30px;
+font-size:45px;
+
+
+margin-bottom:35px;
 
 }
 
 
+
+/* INFO */
 
 
 .info-card{
@@ -305,7 +336,8 @@ border-radius:16px;
 
 padding:18px;
 
-margin-bottom:15px;
+margin-bottom:16px;
+
 
 border:1px solid rgba(193,80,46,.3);
 
@@ -335,13 +367,15 @@ color:var(--rust);
 
 font-family:'Fraunces',serif;
 
-font-size:1.25rem;
+font-size:1.3rem;
 
-margin-top:5px;
+margin-top:6px;
 
 }
 
 
+
+/* BUTTON */
 
 
 .back-btn{
@@ -349,21 +383,26 @@ margin-top:5px;
 
 width:100%;
 
-margin-top:15px;
+margin-top:18px;
 
-padding:13px;
+padding:14px;
+
 
 border:none;
 
 border-radius:999px;
 
+
 background:var(--rust);
 
 color:var(--cream-light);
 
+
 font-weight:600;
 
 cursor:pointer;
+
+font-size:.9rem;
 
 }
 
@@ -377,6 +416,16 @@ background:var(--rust-dark);
 
 
 
+@media(max-width:480px){
+
+.profile-card{
+
+padding:28px;
+
+}
+
+}
+
 
 </style>
 
@@ -387,9 +436,6 @@ background:var(--rust-dark);
 
 <body>
 
-
-
-<!-- SAME TOP BAR AS HOME -->
 
 
 <div class="topbar">
@@ -429,7 +475,6 @@ Log out
 
 
 
-
 <main>
 
 
@@ -444,6 +489,7 @@ Your Profile
 <p class="profile-sub">
 Your NicheTune music identity
 </p>
+
 
 
 
@@ -469,7 +515,6 @@ Loading...
 
 
 
-
 <div class="info-card">
 
 <div class="label">
@@ -481,7 +526,6 @@ Loading...
 </div>
 
 </div>
-
 
 
 
@@ -501,7 +545,6 @@ Loading...
 
 
 
-
 <div class="info-card">
 
 <div class="label">
@@ -517,7 +560,6 @@ Loading...
 
 
 
-
 <button class="back-btn" onclick="window.location.href='home.html'">
 
 Back to Discover
@@ -526,12 +568,10 @@ Back to Discover
 
 
 
-
 </div>
 
 
 </main>
-
 
 
 
@@ -545,8 +585,7 @@ const BASE_URL =
 
 
 
-
-// GET PROFILE API
+// LOAD PROFILE FROM API
 
 
 async function loadProfile(){
@@ -571,7 +610,7 @@ credentials:"include"
 
 
 
-if(response.status === 401){
+if(response.status===401){
 
 window.location.href="login.html";
 
@@ -581,12 +620,10 @@ return;
 
 
 
-
 const data = await response.json();
 
 
-
-console.log("PROFILE DATA:", data);
+console.log("PROFILE:",data);
 
 
 
@@ -596,7 +633,7 @@ data.username;
 
 
 document.getElementById("genre").textContent =
-data.favorite_genre || "No favorite genre";
+data.favorite_genre || "Not available";
 
 
 
@@ -613,6 +650,7 @@ new Date(data.joined_at)
 
 }
 
+
 catch(error){
 
 console.error(
@@ -623,13 +661,12 @@ error
 }
 
 
-
 }
 
 
 
 
-// LOGOUT API
+// LOGOUT
 
 
 document
@@ -659,7 +696,6 @@ window.location.href="login.html";
 
 
 });
-
 
 
 
