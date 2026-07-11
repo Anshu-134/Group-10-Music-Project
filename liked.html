@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Liked Songs</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --charcoal:#1c1a17;
+    --cream:#efe6d2;
+    --olive:#6b6f38;
+    --text-muted:#948a68;
+}
+
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at 20% 10%, rgba(107,111,56,.15), transparent 40%),
+    var(--charcoal);
+
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+}
+
+
+/* top bar */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px 50px;
+}
+
+
+.brand{
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+}
+
+
+.back-btn{
+    background:none;
+    color:var(--cream);
+    border:1px solid rgba(239,230,210,.4);
+    border-radius:999px;
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+
+/* content */
+
+
+main{
+    padding:30px 50px;
+}
+
+
+h1{
+    font-family:'Fraunces',serif;
+    font-size:2.2rem;
+    margin-bottom:30px;
+}
+
+
+
+.song-container{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    max-width:700px;
+}
+
+
+
+.song-card{
+
+    background:var(--cream);
+    color:#211f1b;
+
+    border-radius:20px;
+    padding:18px;
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+}
+
+
+.song-card img{
+
+    width:75px;
+    height:75px;
+    border-radius:12px;
+    object-fit:cover;
+
+}
+
+
+.song-info h2{
+
+    font-family:'Fraunces',serif;
+    font-size:1.2rem;
+
+}
+
+
+.song-info p{
+
+    color:#6b6455;
+    margin-top:5px;
+
+}
+
+
+
+.empty{
+
+    color:var(--text-muted);
+    margin-top:40px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+
+    <div class="brand">
+        TBD
+    </div>
+
+
+    <button class="back-btn" id="backBtn">
+        Back
+    </button>
+
+</div>
+
+
+
+<main>
+
+<h1>
+    Liked Songs
+</h1>
+
+
+<div class="song-container" id="songContainer">
+
+</div>
+
+
+<p class="empty" id="emptyMessage">
+Loading liked songs...
+</p>
+
+
+</main>
+
+
+
+
+<script>
+
+
+const BASE_URL = "https://group-10-backend.onrender.com";
+
+
+document.getElementById("backBtn")
+.addEventListener("click",()=>{
+
+    window.location.href="home.html";
+
+});
+
+
+
+async function loadLikedSongs(){
+
+
+try{
+
+
+const response = await fetch(
+    `${BASE_URL}/liked`,
+    {
+        method:"GET",
+        credentials:"include",
+        headers:{
+            "Accept":"application/json"
+        }
+    }
+);
+
+
+
+const data = await response.json();
+
+
+console.log(data);
+
+
+
+const container =
+document.getElementById("songContainer");
+
+
+const empty =
+document.getElementById("emptyMessage");
+
+
+
+container.innerHTML="";
+
+
+
+if(!data.songs || data.songs.length===0){
+
+    empty.textContent =
+    "You haven't liked any songs yet.";
+
+    return;
+
+}
+
+
+
+empty.style.display="none";
+
+
+
+data.songs.forEach(song=>{
+
+
+const card=document.createElement("div");
+
+
+card.className="song-card";
+
+
+
+card.innerHTML=`
+
+<img src="${song.artwork_url || ''}">
+
+
+<div class="song-info">
+
+<h2>${song.title}</h2>
+
+<p>${song.artist}</p>
+
+</div>
+
+`;
+
+
+
+container.appendChild(card);
+
+
+
+});
+
+
+
+}
+
+catch(error){
+
+console.error(
+"LIKED SONG ERROR:",
+error
+);
+
+document.getElementById("emptyMessage")
+.textContent=
+"Could not load liked songs.";
+
+}
+
+
+}
+
+
+
+loadLikedSongs();
+
+
+</script>
+
+
+</body>
+</html>
