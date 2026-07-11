@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Liked Songs — NicheTune</title>
+<title>Liked Songs — TBD</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 <style>
@@ -17,17 +16,18 @@
 
 --charcoal:#1c1a17;
 --charcoal-2:#141210;
+--charcoal-soft:#2a2723;
+
 --cream:#efe6d2;
 --cream-light:#f7f1e3;
 
+--rust:#c1502e;
 --olive:#6b6f38;
 
---rust:#c1502e;
-
 --text-muted:#948a68;
---text-dark:#211f1b;
 
 }
+
 
 
 *{
@@ -43,8 +43,11 @@ body{
 min-height:100vh;
 
 background:
-radial-gradient(circle at 20% 10%, rgba(107,111,56,.15), transparent 40%),
-radial-gradient(circle at 80% 90%, rgba(193,80,46,.12), transparent 45%),
+
+radial-gradient(circle at 15% 10%, rgba(107,111,56,.16),transparent 45%),
+
+radial-gradient(circle at 85% 90%, rgba(193,80,46,.14),transparent 50%),
+
 var(--charcoal);
 
 color:var(--cream);
@@ -55,16 +58,16 @@ font-family:'Inter',sans-serif;
 
 
 
-/* TOP BAR */
+/* NAV */
 
 
 .topbar{
 
 display:flex;
 
-justify-content:space-between;
-
 align-items:center;
+
+justify-content:space-between;
 
 padding:22px clamp(20px,5vw,56px);
 
@@ -76,9 +79,9 @@ padding:22px clamp(20px,5vw,56px);
 
 font-family:'Fraunces',serif;
 
-font-size:1.3rem;
+font-size:1.2rem;
 
-color:var(--cream);
+font-weight:600;
 
 }
 
@@ -96,9 +99,19 @@ gap:10px;
 
 .nav-btn{
 
-font-family:'Inter',sans-serif;
+background:transparent;
 
-font-size:.78rem;
+color:var(--cream);
+
+border:
+
+1.5px solid rgba(239,230,210,.35);
+
+border-radius:999px;
+
+padding:10px 20px;
+
+font-size:.75rem;
 
 font-weight:600;
 
@@ -106,19 +119,9 @@ letter-spacing:.06em;
 
 text-transform:uppercase;
 
-color:var(--cream);
-
-background:transparent;
-
-border:1.5px solid rgba(239,230,210,.35);
-
-border-radius:999px;
-
-padding:10px 20px;
-
 cursor:pointer;
 
-transition:.2s;
+transition:.25s;
 
 }
 
@@ -126,21 +129,125 @@ transition:.2s;
 
 .nav-btn:hover{
 
-background:rgba(239,230,210,.1);
+background:rgba(239,230,210,.08);
 
 }
 
 
 
-
-/* CONTENT */
+/* MAIN */
 
 
 main{
 
-padding:30px clamp(20px,5vw,56px);
+display:flex;
+
+justify-content:center;
+
+padding:45px 20px;
 
 }
+
+
+
+.wrapper{
+
+width:620px;
+
+max-width:95vw;
+
+}
+
+
+
+/* HEADER */
+
+
+.header{
+
+text-align:center;
+
+margin-bottom:45px;
+
+}
+
+
+
+.vinyl{
+
+width:85px;
+
+height:85px;
+
+margin:0 auto 25px;
+
+border-radius:50%;
+
+background:
+
+repeating-conic-gradient(
+
+#141210 0deg 5deg,
+
+#2a2723 5deg 10deg
+
+);
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+box-shadow:
+
+0 20px 45px rgba(0,0,0,.5);
+
+
+animation:spin 10s linear infinite;
+
+}
+
+
+
+.vinyl::after{
+
+content:"";
+
+width:28px;
+
+height:28px;
+
+border-radius:50%;
+
+background:var(--olive);
+
+box-shadow:
+
+inset 0 0 0 5px #141210;
+
+}
+
+
+
+@keyframes spin{
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
 
 
 
@@ -148,9 +255,9 @@ h1{
 
 font-family:'Fraunces',serif;
 
-font-size:2.2rem;
+font-size:2.6rem;
 
-margin-bottom:8px;
+margin-bottom:10px;
 
 }
 
@@ -160,92 +267,201 @@ margin-bottom:8px;
 
 color:var(--text-muted);
 
-margin-bottom:35px;
+font-size:.95rem;
 
 }
 
 
 
 
-.song-container{
+
+/* SONG CARDS */
+
+
+.song-list{
 
 display:flex;
 
 flex-direction:column;
 
-gap:18px;
-
-max-width:700px;
+gap:14px;
 
 }
-
 
 
 
 .song-card{
 
-background:var(--cream);
-
-color:var(--text-dark);
-
-border-radius:20px;
-
-padding:18px;
 
 display:flex;
 
 align-items:center;
 
-gap:20px;
+gap:18px;
 
-box-shadow:
-0 20px 40px rgba(0,0,0,.35);
+
+padding:18px 22px;
+
+
+background:
+
+rgba(239,230,210,.08);
+
+
+border:
+
+1px solid rgba(239,230,210,.12);
+
+
+border-radius:24px;
+
+
+backdrop-filter:blur(10px);
+
+
+transition:.25s;
 
 }
 
 
 
-.song-card img{
+.song-card:hover{
 
-width:75px;
+transform:translateY(-4px);
 
-height:75px;
+background:
 
-border-radius:12px;
-
-object-fit:cover;
-
-background:#2a2723;
+rgba(239,230,210,.14);
 
 }
 
 
 
-.song-info h2{
+
+
+.number{
+
+
+width:38px;
+
+height:38px;
+
+
+border-radius:50%;
+
+
+background:
+
+linear-gradient(
+135deg,
+var(--rust),
+#9c3d22
+);
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+font-size:.8rem;
+
+font-weight:700;
+
+
+color:var(--cream-light);
+
+flex-shrink:0;
+
+}
+
+
+
+.song-info{
+
+flex:1;
+
+}
+
+
+
+.song-title{
 
 font-family:'Fraunces',serif;
 
-font-size:1.2rem;
+font-size:1.15rem;
+
+color:var(--cream);
 
 }
 
 
 
-.song-info p{
-
-color:#6b6455;
+.artist{
 
 margin-top:5px;
 
+font-size:.88rem;
+
+color:var(--text-muted);
+
 }
+
+
+
+.heart{
+
+font-size:1.1rem;
+
+color:var(--rust);
+
+}
+
+
 
 
 
 .empty{
 
+text-align:center;
+
+padding:40px;
+
 color:var(--text-muted);
 
-margin-top:40px;
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
+.top-actions{
+
+gap:5px;
+
+}
+
+
+.nav-btn{
+
+padding:9px 12px;
+
+font-size:.65rem;
+
+}
+
+
+h1{
+
+font-size:2.1rem;
+
+}
+
 
 }
 
@@ -257,17 +473,16 @@ margin-top:40px;
 </head>
 
 
-
 <body>
+
 
 
 <div class="topbar">
 
 
 <div class="brand">
-NicheTune
+TBD
 </div>
-
 
 
 <div class="top-actions">
@@ -278,7 +493,7 @@ Profile
 </button>
 
 
-<button class="nav-btn" id="likedSongsBtn">
+<button class="nav-btn" id="likedBtn">
 Liked Songs
 </button>
 
@@ -296,7 +511,17 @@ Log out
 
 
 
+
 <main>
+
+
+<div class="wrapper">
+
+
+<div class="header">
+
+
+<div class="vinyl"></div>
 
 
 <h1>
@@ -305,19 +530,28 @@ Liked Songs
 
 
 <p class="subtitle">
-Your favorite tracks on NicheTune
+Your favorite tracks on TBD
 </p>
 
-
-
-<div class="song-container" id="songContainer">
 
 </div>
 
 
-<p class="empty" id="emptyMessage">
-Loading liked songs...
-</p>
+
+
+<div class="song-list" id="songList">
+
+
+<div class="empty">
+Loading songs...
+</div>
+
+
+</div>
+
+
+
+</div>
 
 
 </main>
@@ -334,33 +568,23 @@ const BASE_URL =
 
 
 
-
-// NAVIGATION
-
-
-document
-.getElementById("profileBtn")
-.addEventListener("click",()=>{
+document.getElementById("profileBtn").onclick=()=>{
 
 window.location.href="profile.html";
 
-});
+};
 
 
 
-document
-.getElementById("likedSongsBtn")
-.addEventListener("click",()=>{
+document.getElementById("likedBtn").onclick=()=>{
 
 window.location.href="liked.html";
 
-});
+};
 
 
 
-document
-.getElementById("logoutBtn")
-.addEventListener("click",async()=>{
+document.getElementById("logoutBtn").onclick=async()=>{
 
 
 await fetch(
@@ -380,15 +604,11 @@ credentials:"include"
 
 window.location.href="login.html";
 
-
-});
-
+};
 
 
 
 
-
-// LOAD LIKED SONGS
 
 
 async function loadLikedSongs(){
@@ -397,19 +617,14 @@ async function loadLikedSongs(){
 try{
 
 
-const response = await fetch(
+const response =
+await fetch(
 
 `${BASE_URL}/history`,
 
 {
 
-method:"GET",
-
-credentials:"include",
-
-headers:{
-"Accept":"application/json"
-}
+credentials:"include"
 
 }
 
@@ -417,62 +632,45 @@ headers:{
 
 
 
-if(response.status===401){
-
-window.location.href="login.html";
-
-return;
-
-}
+const data =
+await response.json();
 
 
 
-const data = await response.json();
-
-
-console.log("HISTORY:",data);
-
-
-
-const likedSongs =
+const songs =
 data.history.filter(
-song => song.direction === "like"
+song=>song.direction==="like"
 );
 
 
 
-const container =
-document.getElementById("songContainer");
-
-
-const empty =
-document.getElementById("emptyMessage");
+const list =
+document.getElementById("songList");
 
 
 
-container.innerHTML="";
+list.innerHTML="";
 
 
 
-if(likedSongs.length===0){
+if(songs.length===0){
 
+list.innerHTML=
 
-empty.textContent =
-"You haven't liked any songs yet.";
-
+`
+<div class="empty">
+No liked songs yet.
+Start discovering music!
+</div>
+`;
 
 return;
-
 
 }
 
 
 
-empty.style.display="none";
-
-
-
-likedSongs.forEach(song=>{
+songs.forEach((song,index)=>{
 
 
 const card =
@@ -483,49 +681,59 @@ card.className="song-card";
 
 
 
-card.innerHTML=`
+card.innerHTML=
 
-<img src="${song.artwork_url || ''}">
+`
+
+<div class="number">
+${index+1}
+</div>
 
 
 <div class="song-info">
 
-<h2>${song.title}</h2>
+<div class="song-title">
+${song.title}
+</div>
 
-<p>${song.artist}</p>
 
+<div class="artist">
+${song.artist}
+</div>
+
+</div>
+
+
+<div class="heart">
+♥
 </div>
 
 `;
 
 
 
-container.appendChild(card);
-
+list.appendChild(card);
 
 
 });
 
 
-
 }
-
 
 
 catch(error){
 
-
-console.error(
-"LIKED SONG ERROR:",
-error
-);
+console.error(error);
 
 
+document.getElementById("songList").innerHTML=
 
-document.getElementById("emptyMessage")
-.textContent =
-"Could not load liked songs.";
+`
+<div class="empty">
+Could not load liked songs.
+</div>
 
+`;
 
 }
 
@@ -537,10 +745,9 @@ document.getElementById("emptyMessage")
 loadLikedSongs();
 
 
+
 </script>
 
 
-
 </body>
-
 </html>
