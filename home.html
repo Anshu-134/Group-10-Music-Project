@@ -112,7 +112,7 @@
 
   .top-actions{
     display:flex;
-    gap:12px;
+    gap:8px;
     align-items:center;
 }
 
@@ -136,6 +136,25 @@
     border-color:rgba(242,226,184,0.6);
 }
 
+  .liked-btn{
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-cream);
+    background:transparent;
+    border:1.5px solid rgba(242,226,184,0.35);
+    border-radius:999px;
+    padding:10px 20px;
+    cursor:pointer;
+    transition:background 0.2s ease, border-color 0.2s ease;
+}
+
+.liked-btn:hover{
+    background:rgba(242,226,184,0.08);
+    border-color:rgba(242,226,184,0.6);
+}
   /* ---------- Main stage ---------- */
   main{
     flex: 1;
@@ -433,14 +452,19 @@
     </div>
     <div class="top-actions">
 
-    <button class="profile-btn" id="profileBtn">
+<button class="profile-btn" id="profileBtn">
     Profile
 </button>
 
-    <button class="logout-btn" id="logoutBtn">
-        Log out
-    </button>
-    </div>
+<button class="liked-btn" id="likedSongsBtn">
+    Liked Songs
+</button>
+
+<button class="logout-btn" id="logoutBtn">
+    Log out
+</button>
+
+</div>
 
   </div>
 
@@ -671,7 +695,11 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     window.location.href = "login.html";
 });
 
-
+document.getElementById("likedSongsBtn")
+.addEventListener("click", () => {
+    window.location.href = "liked.html";
+});
+  
 document.getElementById("profileBtn")
 .addEventListener("click", () => {
     window.location.href = "profile.html";
