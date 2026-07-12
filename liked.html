@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Liked Songs — TBD</title>
+<title>Liked Songs — Sindr</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -250,7 +250,6 @@ transform:rotate(360deg);
 
 
 
-
 h1{
 
 font-family:'Fraunces',serif;
@@ -431,13 +430,7 @@ padding:40px;
 
 color:var(--text-muted);
 
-}
-
-
-
-
-
-@media(max-width:600px){
+}@media(max-width:600px){
 
 
 .top-actions{
@@ -481,7 +474,7 @@ font-size:2.1rem;
 
 
 <div class="brand">
-TBD
+Sindr
 </div>
 
 
@@ -530,7 +523,7 @@ Liked Songs
 
 
 <p class="subtitle">
-Your favorite tracks on TBD
+Your favorite tracks on Sindr
 </p>
 
 
@@ -554,17 +547,42 @@ Loading songs...
 </div>
 
 
-</main>
-
-
-
-
-
-<script>
+</main><script>
 
 
 const BASE_URL =
 "https://group-10-backend.onrender.com";
+
+
+
+async function checkLogin(){
+
+    try{
+
+        const response = await fetch(
+            `${BASE_URL}/profile`,
+            {
+                method:"GET",
+                credentials:"include"
+            }
+        );
+
+
+        if(response.status === 401){
+
+            window.location.replace("login.html");
+
+        }
+
+    }
+    catch(error){
+
+        window.location.replace("login.html");
+
+    }
+
+}
+
 
 
 
@@ -602,7 +620,7 @@ credentials:"include"
 );
 
 
-window.location.href="login.html";
+window.location.replace("login.html");
 
 };
 
@@ -632,6 +650,15 @@ credentials:"include"
 
 
 
+if(response.status === 401){
+
+    window.location.replace("login.html");
+    return;
+
+}
+
+
+
 const data =
 await response.json();
 
@@ -655,13 +682,13 @@ list.innerHTML="";
 
 if(songs.length===0){
 
-list.innerHTML=
+list.innerHTML=`
 
-`
 <div class="empty">
 No liked songs yet.
 Start discovering music!
 </div>
+
 `;
 
 return;
@@ -681,9 +708,7 @@ card.className="song-card";
 
 
 
-card.innerHTML=
-
-`
+card.innerHTML=`
 
 <div class="number">
 ${index+1}
@@ -726,9 +751,8 @@ catch(error){
 console.error(error);
 
 
-document.getElementById("songList").innerHTML=
+document.getElementById("songList").innerHTML=`
 
-`
 <div class="empty">
 Could not load liked songs.
 </div>
@@ -738,9 +762,7 @@ Could not load liked songs.
 }
 
 
-}
-
-
+}checkLogin();
 
 loadLikedSongs();
 
@@ -750,4 +772,5 @@ loadLikedSongs();
 
 
 </body>
+
 </html>

@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profile — NicheTune</title>
+<title>Profile — Sindr</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 <style>
@@ -26,9 +26,10 @@
 --rust-dark:#9c3d22;
 
 --olive:#6b6f38;
+--olive-dark:#565933;
 
---text-dark:#211f1b;
 --text-cream:#f2e2b8;
+--text-dark:#211f1b;
 --text-muted:#948a68;
 
 }
@@ -36,9 +37,11 @@
 
 
 *{
-box-sizing:border-box;
+
 margin:0;
 padding:0;
+box-sizing:border-box;
+
 }
 
 
@@ -49,14 +52,22 @@ min-height:100vh;
 
 background:
 
-radial-gradient(circle at 15% 10%, rgba(107,111,56,.15), transparent 45%),
+radial-gradient(
+circle at 15% 10%,
+rgba(107,111,56,.15),
+transparent 45%
+),
 
-radial-gradient(circle at 85% 90%, rgba(193,80,46,.12), transparent 50%),
+radial-gradient(
+circle at 85% 90%,
+rgba(193,80,46,.12),
+transparent 50%
+),
 
 var(--charcoal);
 
 
-font-family:'Inter',sans-serif;
+font-family:"Inter",sans-serif;
 
 color:var(--cream);
 
@@ -68,7 +79,8 @@ flex-direction:column;
 
 
 
-/* TOP NAV */
+/* NAVIGATION */
+
 
 .topbar{
 
@@ -99,6 +111,7 @@ gap:12px;
 .brand-mark{
 
 width:34px;
+
 height:34px;
 
 border-radius:50%;
@@ -107,8 +120,11 @@ border-radius:50%;
 background:
 
 repeating-conic-gradient(
+
 var(--charcoal-2) 0deg 6deg,
+
 var(--charcoal-soft) 6deg 12deg
+
 );
 
 
@@ -127,6 +143,7 @@ justify-content:center;
 content:"";
 
 width:12px;
+
 height:12px;
 
 border-radius:50%;
@@ -134,6 +151,7 @@ border-radius:50%;
 background:var(--olive);
 
 box-shadow:
+
 inset 0 0 0 3px var(--charcoal-2);
 
 }
@@ -142,7 +160,7 @@ inset 0 0 0 3px var(--charcoal-2);
 
 .brand-name{
 
-font-family:'Fraunces',serif;
+font-family:"Fraunces",serif;
 
 font-size:1.15rem;
 
@@ -166,15 +184,17 @@ gap:12px;
 
 background:transparent;
 
-color:var(--text-cream);
+border:
 
-border:1.5px solid rgba(242,226,184,.35);
+1px solid rgba(242,226,184,.35);
 
 border-radius:999px;
 
-padding:10px 18px;
+padding:10px 20px;
 
-font-size:.75rem;
+color:var(--text-cream);
+
+font-size:.78rem;
 
 font-weight:600;
 
@@ -190,7 +210,9 @@ cursor:pointer;
 
 .nav-btn:hover{
 
-background:rgba(242,226,184,.08);
+background:
+
+rgba(242,226,184,.08);
 
 }
 
@@ -220,482 +242,6 @@ padding:20px;
 
 .profile-card{
 
-width:420px;
-
-max-width:92vw;
-
-background:var(--cream);
-
-color:var(--text-dark);
-
-border-radius:30px;
-
-padding:35px;
-
-
-box-shadow:
-
-0 30px 60px -20px rgba(0,0,0,.6);
-
-text-align:center;
-
-}
-
-
-
-/* AVATAR */
-
-
-.avatar{
-
-width:95px;
-
-height:95px;
-
-border-radius:50%;
-
-background:
-
-linear-gradient(
-135deg,
-var(--olive),
-#8b8f48
-);
-
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-font-size:42px;
-
-margin:0 auto 18px;
-
-}
-
-
-
-.username{
-
-font-family:'Fraunces',serif;
-
-font-size:2rem;
-
-}
-
-
-
-.subtitle{
-
-font-size:.85rem;
-
-color:var(--text-muted);
-
-margin-top:6px;
-
-}
-
-
-
-/* STATS */
-
-
-.stats{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:12px;
-
-margin:30px 0;
-
-}
-
-
-
-.stat{
-
-background:white;
-
-border-radius:18px;
-
-padding:15px 8px;
-
-}
-
-
-
-.stat-number{
-
-font-family:'Fraunces',serif;
-
-font-size:1.3rem;
-
-}
-
-
-
-.stat-label{
-
-font-size:.65rem;
-
-color:var(--text-muted);
-
-text-transform:uppercase;
-
-letter-spacing:.08em;
-
-margin-top:5px;
-
-}
-
-
-
-/* SOUND */
-
-
-.section-title{
-
-font-family:'Fraunces',serif;
-
-font-size:1.2rem;
-
-text-align:left;
-
-margin-bottom:12px;
-
-}
-
-
-
-.genre-container{
-
-display:flex;
-
-justify-content:flex-start;
-
-gap:8px;
-
-margin-bottom:22px;
-
-}
-
-
-
-.genre-pill{
-
-background:rgba(107,111,56,.15);
-
-color:var(--olive);
-
-padding:8px 16px;
-
-border-radius:999px;
-
-font-size:.8rem;
-
-font-weight:600;
-
-}
-
-
-
-.member{
-
-background:white;
-
-border-radius:16px;
-
-padding:14px;
-
-text-align:left;
-
-margin-bottom:20px;
-
-}
-
-
-
-.member-label{
-
-font-size:.65rem;
-
-text-transform:uppercase;
-
-letter-spacing:.08em;
-
-color:var(--text-muted);
-
-}
-
-
-
-.member-value{
-
-font-family:'Fraunces',serif;
-
-font-size:1.1rem;
-
-margin-top:5px;
-
-}
-
-
-
-/* BACK BUTTON */
-
-
-.back-btn{
-
-width:100%;
-
-padding:13px;
-
-border:none;
-
-border-radius:999px;
-
-background:var(--rust);
-
-color:white;
-
-font-weight:600;
-
-cursor:pointer;
-
-}
-
-
-
-.back-btn:hover{
-
-background:var(--rust-dark);
-
-}
-
-
-
-</style>
-
-</head>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Profile — NicheTune</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
-<style>
-
-:root{
-
---charcoal:#1c1a17;
---charcoal-2:#141210;
---charcoal-soft:#2a2723;
-
---cream:#efe6d2;
---cream-light:#f7f1e3;
-
---rust:#c1502e;
---rust-dark:#9c3d22;
-
---olive:#6b6f38;
---olive-dark:#565933;
-
---text-cream:#f2e2b8;
---text-dark:#211f1b;
---text-muted:#948a68;
-
-}
-
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-
-body{
-
-min-height:100vh;
-
-background:
-
-radial-gradient(circle at 15% 10%,rgba(107,111,56,.15),transparent 45%),
-
-radial-gradient(circle at 85% 90%,rgba(193,80,46,.12),transparent 50%),
-
-var(--charcoal);
-
-
-font-family:"Inter",sans-serif;
-
-color:var(--cream);
-
-display:flex;
-
-flex-direction:column;
-
-}
-
-
-
-/* NAV */
-
-.topbar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:22px clamp(20px,5vw,56px);
-
-}
-
-
-
-.brand{
-
-display:flex;
-align-items:center;
-gap:12px;
-
-}
-
-
-.brand-mark{
-
-width:34px;
-height:34px;
-
-border-radius:50%;
-
-background:
-
-repeating-conic-gradient(
-var(--charcoal-2) 0deg 6deg,
-var(--charcoal-soft) 6deg 12deg
-);
-
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-}
-
-
-.brand-mark::after{
-
-content:"";
-
-width:12px;
-height:12px;
-
-border-radius:50%;
-
-background:var(--olive);
-
-box-shadow:inset 0 0 0 3px var(--charcoal-2);
-
-}
-
-
-.brand-name{
-
-font-family:"Fraunces",serif;
-
-font-size:1.15rem;
-
-color:var(--text-cream);
-
-}
-
-
-
-.top-actions{
-
-display:flex;
-
-gap:12px;
-
-}
-
-
-
-.nav-btn{
-
-background:transparent;
-
-border:1px solid rgba(242,226,184,.35);
-
-border-radius:999px;
-
-padding:10px 20px;
-
-color:var(--text-cream);
-
-font-size:.78rem;
-
-font-weight:600;
-
-letter-spacing:.06em;
-
-text-transform:uppercase;
-
-cursor:pointer;
-
-}
-
-
-.nav-btn:hover{
-
-background:rgba(242,226,184,.08);
-
-}
-
-
-
-/* CONTENT */
-
-
-main{
-
-flex:1;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-padding:20px;
-
-}
-
-
-
-/* PROFILE */
-
-
-.profile-card{
-
 width:380px;
 
 max-width:90vw;
@@ -719,8 +265,7 @@ box-shadow:
 
 
 
-
-/* VINYL AVATAR */
+/* AVATAR */
 
 
 .avatar{
@@ -737,8 +282,11 @@ border-radius:50%;
 background:
 
 repeating-conic-gradient(
+
 #141210 0deg 8deg,
+
 #2a2723 8deg 16deg
+
 );
 
 
@@ -749,7 +297,9 @@ align-items:center;
 justify-content:center;
 
 
-box-shadow:0 15px 30px rgba(0,0,0,.3);
+box-shadow:
+
+0 15px 30px rgba(0,0,0,.3);
 
 }
 
@@ -774,10 +324,7 @@ justify-content:center;
 font-size:22px;
 
 }
-
-
-
-/* TEXT */
+  /* PROFILE TEXT */
 
 
 .profile-title{
@@ -802,9 +349,6 @@ margin-bottom:30px;
 
 }
 
-
-
-/* USERNAME */
 
 
 .username{
@@ -923,6 +467,7 @@ cursor:pointer;
 }
 
 
+
 .back-btn:hover{
 
 background:var(--rust-dark);
@@ -948,9 +493,7 @@ padding:26px;
 </head>
 
 
-
 <body>
-
 
 
 <div class="topbar">
@@ -958,13 +501,17 @@ padding:26px;
 
 <div class="brand">
 
+
 <div class="brand-mark"></div>
 
+
 <span class="brand-name">
-TBD
+Sindr
 </span>
 
+
 </div>
+
 
 
 
@@ -972,12 +519,16 @@ TBD
 
 
 <button class="nav-btn" onclick="location.href='liked.html'">
+
 Liked Songs
+
 </button>
 
 
 <button class="nav-btn" id="logoutBtn">
+
 Log out
+
 </button>
 
 
@@ -996,10 +547,11 @@ Log out
 <div class="profile-card">
 
 
+
 <div class="avatar">
 
 <span>
-♪ 
+♪
 </span>
 
 </div>
@@ -1011,8 +563,9 @@ Your Profile
 </h1>
 
 
+
 <p class="profile-sub">
-Your NicheTune music identity
+Your Sindr music identity
 </p>
 
 
@@ -1020,6 +573,7 @@ Your NicheTune music identity
 <div class="username" id="username">
 Loading...
 </div>
+
 
 
 
@@ -1032,11 +586,14 @@ Loading...
 0
 </strong>
 
+
 <span>
 Liked
 </span>
 
+
 </div>
+
 
 
 
@@ -1046,11 +603,14 @@ Liked
 -
 </strong>
 
+
 <span>
 Genre
 </span>
 
+
 </div>
+
 
 
 
@@ -1060,9 +620,11 @@ Genre
 -
 </strong>
 
+
 <span>
 Joined
 </span>
+
 
 </div>
 
@@ -1083,16 +645,48 @@ Back to Discover
 
 
 </main>
-
-
-
-
-
 <script>
 
 
 const BASE_URL =
 "https://group-10-backend.onrender.com";
+
+
+
+
+
+async function checkLogin(){
+
+    try{
+
+        const response = await fetch(
+            `${BASE_URL}/profile`,
+            {
+                method:"GET",
+                credentials:"include"
+            }
+        );
+
+
+        if(response.status === 401){
+
+            window.location.replace("login.html");
+
+        }
+
+    }
+
+    catch(error){
+
+        window.location.replace("login.html");
+
+    }
+
+}
+
+
+
+
 
 
 
@@ -1116,9 +710,9 @@ credentials:"include"
 
 
 
-if(response.status===401){
+if(response.status === 401){
 
-location.href="login.html";
+window.location.replace("login.html");
 
 return;
 
@@ -1126,51 +720,95 @@ return;
 
 
 
+
+
 const data = await response.json();
 
 
 
+
+
 document.getElementById("username").textContent =
+
 data.username || "Listener";
 
 
+
+
+
 document.getElementById("likes").textContent =
+
 data.liked_count || 0;
 
 
+
+
+
 document.getElementById("genre").textContent =
+
 data.favorite_genre || "-";
 
 
+
+
+
+if(data.joined_at){
+
 document.getElementById("joined").textContent =
+
 new Date(data.joined_at)
-.toLocaleDateString("en-US",
+
+.toLocaleDateString(
+
+"en-US",
+
 {
+
 month:"short",
+
 year:"numeric"
+
 }
+
 );
 
+}
+
+else{
+
+document.getElementById("joined").textContent = "-";
+
+}
+
 
 
 }
+
 
 
 catch(error){
 
+
 console.log(error);
 
+
+window.location.replace("login.html");
+
+
+}
+
+
 }
 
 
 
-}
 
 
 
 
 
-document.getElementById("logoutBtn")
+document
+.getElementById("logoutBtn")
 .addEventListener("click", async()=>{
 
 
@@ -1189,19 +827,26 @@ credentials:"include"
 );
 
 
-location.href="login.html";
+
+window.location.replace("login.html");
+
 
 
 });
 
 
 
+
+
+checkLogin();
+
 loadProfile();
 
 
+
+
+
 </script>
-
-
 </body>
 
 </html>
