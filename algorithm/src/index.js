@@ -6,7 +6,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const recommendationRoutes = require('../routes/recommednationRoutes');
+const recommendationRoutes = require('../routes/recommedationRoutes');
  
 const app = express();
 app.use(cors());
