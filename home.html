@@ -161,9 +161,7 @@ color:var(--text-cream);
 }
 
 
-
-/* NAV BUTTONS */
-
+/* BUTTONS */
 
 .top-actions{
 
@@ -192,7 +190,9 @@ color:var(--text-cream);
 
 background:transparent;
 
-border:1.5px solid rgba(242,226,184,.35);
+border:
+
+1.5px solid rgba(242,226,184,.35);
 
 border-radius:999px;
 
@@ -216,7 +216,6 @@ border-color:rgba(242,226,184,.6);
 }
 
 
-
 /* MAIN */
 
 main{
@@ -234,7 +233,6 @@ padding:10px 20px 40px;
 }
 
 
-
 .tagline{
 
 color:var(--text-muted);
@@ -250,8 +248,7 @@ text-align:center;
 }
 
 
-
-/* CARD STACK */
+/* STACK */
 
 .stack{
 
@@ -337,14 +334,15 @@ transition:none;
 }
 
 
-/* GLOW EFFECT */
+/* SWIPE GLOW */
 
 .card.like-glow{
 
 box-shadow:
 
 0 0 45px rgba(107,111,56,.9),
-0 30px 60px -20px rgba(0,0,0,.55);
+0 0 90px rgba(107,111,56,.35),
+var(--shadow-card);
 
 }
 
@@ -354,7 +352,8 @@ box-shadow:
 box-shadow:
 
 0 0 45px rgba(193,80,46,.9),
-0 30px 60px -20px rgba(0,0,0,.55);
+0 0 90px rgba(193,80,46,.35),
+var(--shadow-card);
 
 }
 
@@ -430,7 +429,6 @@ padding:20px 22px 8px;
 }
 
 
-
 .song-title{
 
 font-family:'Fraunces',serif;
@@ -460,7 +458,6 @@ color:var(--text-body);
 padding:14px 22px 0;
 
 }
-
 
 
 #soundcloud-embed{
@@ -585,7 +582,7 @@ right:-90px;
 
 top:0;
 
-height:100%;
+bottom:0;
 
 z-index:20;
 
@@ -631,17 +628,12 @@ height:26px;
 
 /* BUTTON GLOW */
 
-
 .like-btn.active-glow{
 
 box-shadow:
 
-0 0 15px rgba(107,111,56,.9),
-0 0 35px rgba(107,111,56,.7);
-
-transform:
-translateY(-50%)
-scale(1.15);
+0 0 20px rgba(107,111,56,1),
+0 0 45px rgba(107,111,56,.7);
 
 }
 
@@ -651,15 +643,10 @@ scale(1.15);
 
 box-shadow:
 
-0 0 15px rgba(193,80,46,.9),
-0 0 35px rgba(193,80,46,.7);
-
-transform:
-translateY(-50%)
-scale(1.15);
+0 0 20px rgba(193,80,46,1),
+0 0 45px rgba(193,80,46,.7);
 
 }
-
 
 
 
@@ -728,8 +715,6 @@ display:none;
 </style>
 
 </head>
-
-
 <body>
 
 
@@ -773,6 +758,11 @@ Log out
 
 
 </div>
+
+
+
+
+
 <main>
 
 
@@ -791,7 +781,10 @@ Swipe right to like, left to pass
 
 
 
+
+
 <div class="card active" id="activeCard">
+
 
 
 <div class="art-wrap">
@@ -873,14 +866,12 @@ allow="autoplay">
 
 
 
-</div>
 
 
-
-
-<!-- BUTTONS OUTSIDE CARD SO THEY DON'T MOVE -->
+<!-- BUTTONS STAY INSIDE CARD -->
 
 <div class="actions">
+
 
 
 <button 
@@ -940,6 +931,7 @@ stroke-width="2.5">
 
 
 
+
 <button 
 class="action-btn like-btn" 
 id="likeBtn">
@@ -977,6 +969,12 @@ c-2.5 4.6-9.4 9-9.4 9z"/>
 
 
 
+</div>
+
+
+
+
+
 
 
 <div 
@@ -1010,16 +1008,12 @@ Refresh
 </div>
 
 
+
 </main>
-
-
-
-
-
 <script>
 
 
-const BASE_URL = 
+const BASE_URL =
 "https://group-10-backend.onrender.com";
 
 
@@ -1072,7 +1066,9 @@ checkLogin();
 
 
 
+
 let currentSong=null;
+
 
 
 
@@ -1133,15 +1129,19 @@ loadSong();
 
 }
 
-
 catch(error){
 
-console.error(error);
+console.error(
+"SWIPE ERROR",
+error
+);
 
 }
 
 
 }
+
+
 
 
 
@@ -1160,8 +1160,6 @@ document.getElementById("dislikeBtn");
 
 
 
-
-
 let startX=0;
 
 let currentX=0;
@@ -1171,11 +1169,15 @@ let dragging=false;
 
 
 
+
+
 /* BUTTON CLICKS */
 
 
 likeButton.addEventListener(
+
 "click",
+
 ()=>{
 
 
@@ -1184,16 +1186,24 @@ likeButton.classList.add(
 );
 
 
-sendSwipe("like");
+
+sendSwipe(
+"like"
+);
+
 
 
 setTimeout(()=>{
+
 
 likeButton.classList.remove(
 "active-glow"
 );
 
+
+
 },400);
+
 
 
 }
@@ -1202,8 +1212,14 @@ likeButton.classList.remove(
 
 
 
+
+
+
+
 dislikeButton.addEventListener(
+
 "click",
+
 ()=>{
 
 
@@ -1212,21 +1228,30 @@ dislikeButton.classList.add(
 );
 
 
-sendSwipe("dislike");
+
+sendSwipe(
+"dislike"
+);
+
 
 
 setTimeout(()=>{
+
 
 dislikeButton.classList.remove(
 "active-glow"
 );
 
+
+
 },400);
+
 
 
 }
 
 );
+
 
 
 
@@ -1243,10 +1268,12 @@ startDrag
 );
 
 
+
 document.addEventListener(
 "mousemove",
 drag
 );
+
 
 
 document.addEventListener(
@@ -1256,29 +1283,46 @@ endDrag
 
 
 
+
+
 card.addEventListener(
+
 "touchstart",
+
 startDrag,
+
 {
+
 passive:false
+
 }
+
 );
 
 
 
 document.addEventListener(
+
 "touchmove",
+
 drag,
+
 {
+
 passive:false
+
 }
+
 );
 
 
 
 document.addEventListener(
+
 "touchend",
+
 endDrag
+
 );
 
 
@@ -1367,13 +1411,16 @@ currentX-startX;
 
 
 
+
 card.style.transform =
 
 `
-translateX(${distance}px)
-rotate(${distance*.05}deg)
-`;
 
+translateX(${distance}px)
+
+rotate(${distance*0.05}deg)
+
+`;
 
 
 
@@ -1385,6 +1432,7 @@ if(distance>30){
 card.classList.add(
 "like-glow"
 );
+
 
 
 card.classList.remove(
@@ -1469,14 +1517,7 @@ dislikeButton.classList.remove(
 
 }
 
-
-
-
-
-
-
 async function endDrag(){
-
 
 
 if(!dragging){
@@ -1503,12 +1544,14 @@ currentX-startX;
 
 
 
+
 if(distance>100){
 
 
 card.classList.add(
 "fly-right"
 );
+
 
 
 await sendSwipe(
@@ -1555,13 +1598,31 @@ else{
 card.style.transform="";
 
 
+
+card.classList.remove(
+"like-glow",
+"dislike-glow"
+);
+
+
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+
+
 }
 
 
 
-
 }
-
 
 
 
@@ -1570,7 +1631,6 @@ card.style.transform="";
 
 
 function resetCard(){
-
 
 
 card.classList.remove(
@@ -1606,6 +1666,29 @@ dislikeButton.classList.remove(
 
 
 
+/* UNDO */
+
+
+document
+.getElementById("undoBtn")
+.addEventListener(
+"click",
+()=>{
+
+
+resetCard();
+
+
+}
+
+);
+
+
+
+
+
+
+
 /* NAVIGATION */
 
 
@@ -1615,11 +1698,16 @@ document
 "click",
 ()=>{
 
-window.location.href="liked.html";
+
+window.location.href =
+"liked.html";
+
 
 }
 
 );
+
+
 
 
 
@@ -1629,11 +1717,15 @@ document
 "click",
 ()=>{
 
-window.location.href="profile.html";
+
+window.location.href =
+"profile.html";
+
 
 }
 
 );
+
 
 
 
@@ -1683,6 +1775,7 @@ window.location.replace(
 
 
 
+
 /* LOAD SONG */
 
 
@@ -1716,6 +1809,7 @@ await response.json();
 
 
 
+
 if(!data.song){
 
 return;
@@ -1724,7 +1818,10 @@ return;
 
 
 
-currentSong=data.song;
+
+currentSong =
+data.song;
+
 
 
 
@@ -1741,6 +1838,7 @@ currentSong.title ||
 
 
 
+
 document
 .getElementById("artistName")
 .textContent =
@@ -1748,6 +1846,7 @@ document
 currentSong.artist ||
 
 "Unknown Artist";
+
 
 
 
@@ -1766,7 +1865,9 @@ currentSong.genre ||
 
 
 
+
 if(currentSong.artwork_url){
+
 
 
 document
@@ -1783,6 +1884,7 @@ document
 
 
 
+
 document
 .getElementById("soundcloud-embed")
 .src =
@@ -1792,11 +1894,15 @@ document
 
 
 
+
+
+
 }
 
 
 
 catch(error){
+
 
 console.error(
 "LOAD SONG ERROR",
@@ -1804,11 +1910,14 @@ error
 );
 
 
+
+}
+
+
+
 }
 
 
-
-}
 
 
 
