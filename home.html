@@ -10,7 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 
 <style>
 
@@ -24,7 +25,10 @@
 --cream-light:#f7f1e3;
 
 --rust:#c1502e;
+--rust-dark:#9c3d22;
+
 --olive:#6b6f38;
+--olive-dark:#565933;
 
 --text-cream:#f2e2b8;
 --text-dark:#211f1b;
@@ -56,8 +60,15 @@ height:100%;
 body{
 
 background:
-radial-gradient(circle at 15% 10%,rgba(107,111,56,.15),transparent 45%),
-radial-gradient(circle at 85% 90%,rgba(193,80,46,.12),transparent 50%),
+
+radial-gradient(circle at 15% 10%,
+rgba(107,111,56,.15),
+transparent 45%),
+
+radial-gradient(circle at 85% 90%,
+rgba(193,80,46,.12),
+transparent 50%),
+
 var(--charcoal);
 
 color:var(--cream);
@@ -74,6 +85,7 @@ overflow-x:hidden;
 }
 
 
+
 /* TOP BAR */
 
 .topbar{
@@ -87,6 +99,7 @@ padding:22px clamp(20px,5vw,56px);
 }
 
 
+
 .brand{
 
 display:flex;
@@ -94,6 +107,7 @@ align-items:center;
 gap:12px;
 
 }
+
 
 
 .brand-mark{
@@ -133,6 +147,7 @@ inset 0 0 0 3px var(--charcoal-2);
 }
 
 
+
 .brand-name{
 
 font-family:'Fraunces',serif;
@@ -147,7 +162,8 @@ color:var(--text-cream);
 
 
 
-/* TOP BUTTONS */
+/* NAV BUTTONS */
+
 
 .top-actions{
 
@@ -195,6 +211,8 @@ transition:.2s;
 
 background:rgba(242,226,184,.08);
 
+border-color:rgba(242,226,184,.6);
+
 }
 
 
@@ -214,6 +232,7 @@ align-items:center;
 padding:10px 20px 40px;
 
 }
+
 
 
 .tagline{
@@ -247,7 +266,6 @@ height:min(600px,72vh);
 }
 
 
-
 .card{
 
 position:absolute;
@@ -264,7 +282,7 @@ display:flex;
 
 flex-direction:column;
 
-overflow:hidden;
+overflow:visible;
 
 color:var(--text-dark);
 
@@ -273,7 +291,9 @@ color:var(--text-dark);
 
 .card.behind-1{
 
-transform:scale(.96) translateY(14px);
+transform:
+scale(.96)
+translateY(14px);
 
 opacity:.75;
 
@@ -284,7 +304,9 @@ z-index:1;
 
 .card.behind-2{
 
-transform:scale(.92) translateY(26px);
+transform:
+scale(.92)
+translateY(26px);
 
 opacity:.45;
 
@@ -302,8 +324,8 @@ cursor:grab;
 touch-action:none;
 
 transition:
-
-transform .35s cubic-bezier(.2,.7,.3,1);
+transform .35s cubic-bezier(.2,.7,.3,1),
+opacity .35s ease;
 
 }
 
@@ -314,6 +336,27 @@ transition:none;
 
 }
 
+
+/* GLOW EFFECT */
+
+.card.like-glow{
+
+box-shadow:
+
+0 0 45px rgba(107,111,56,.9),
+0 30px 60px -20px rgba(0,0,0,.55);
+
+}
+
+
+.card.dislike-glow{
+
+box-shadow:
+
+0 0 45px rgba(193,80,46,.9),
+0 30px 60px -20px rgba(0,0,0,.55);
+
+}
 
 .card.fly-left{
 
@@ -326,6 +369,7 @@ opacity:0;
 }
 
 
+
 .card.fly-right{
 
 transform:
@@ -335,6 +379,7 @@ rotate(18deg)!important;
 opacity:0;
 
 }
+
 
 
 /* ART */
@@ -361,6 +406,7 @@ flex-shrink:0;
 }
 
 
+
 .art-image{
 
 position:absolute;
@@ -374,6 +420,65 @@ background-position:center;
 }
 
 
+
+/* TRACK INFO */
+
+.track-info{
+
+padding:20px 22px 8px;
+
+}
+
+
+
+.song-title{
+
+font-family:'Fraunces',serif;
+
+font-size:1.5rem;
+
+margin-bottom:4px;
+
+}
+
+
+
+.artist-name{
+
+font-size:.98rem;
+
+color:var(--text-body);
+
+}
+
+
+
+/* PLAYER */
+
+.player-wrap{
+
+padding:14px 22px 0;
+
+}
+
+
+
+#soundcloud-embed{
+
+width:100%;
+
+height:88px;
+
+border:none;
+
+border-radius:var(--radius-md);
+
+}
+
+
+
+/* GENRE */
+
 .genre-pill{
 
 position:absolute;
@@ -382,7 +487,8 @@ top:16px;
 
 left:16px;
 
-background:rgba(28,26,23,.65);
+background:
+rgba(28,26,23,.65);
 
 color:var(--text-cream);
 
@@ -396,6 +502,9 @@ z-index:3;
 
 }
 
+
+
+/* VINYL */
 
 .vinyl{
 
@@ -423,6 +532,25 @@ animation:spin 6s linear infinite;
 }
 
 
+
+@keyframes spin{
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
 .vinyl::after{
 
 content:"";
@@ -433,77 +561,167 @@ width:44px;
 
 height:44px;
 
+border-radius:50%;
+
+background:var(--olive);
+
 left:43px;
 
 top:43px;
 
+}
+
+
+
+/* ACTION BUTTONS */
+
+.actions{
+
+position:absolute;
+
+left:-90px;
+
+right:-90px;
+
+top:0;
+
+height:100%;
+
+z-index:20;
+
+pointer-events:none;
+
+}
+
+
+
+.action-btn{
+
+width:56px;
+
+height:56px;
+
 border-radius:50%;
+
+border:none;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+cursor:pointer;
+
+transition:.25s ease;
+
+}
+
+
+
+.action-btn svg{
+
+width:26px;
+
+height:26px;
+
+}
+
+
+
+/* BUTTON GLOW */
+
+
+.like-btn.active-glow{
+
+box-shadow:
+
+0 0 15px rgba(107,111,56,.9),
+0 0 35px rgba(107,111,56,.7);
+
+transform:
+translateY(-50%)
+scale(1.15);
+
+}
+
+
+
+.dislike-btn.active-glow{
+
+box-shadow:
+
+0 0 15px rgba(193,80,46,.9),
+0 0 35px rgba(193,80,46,.7);
+
+transform:
+translateY(-50%)
+scale(1.15);
+
+}
+
+
+
+
+.like-btn{
+
+position:absolute;
+
+right:0;
+
+top:50%;
+
+transform:translateY(-50%);
+
+pointer-events:auto;
 
 background:var(--olive);
 
 }
 
 
-@keyframes spin{
 
-from{
-transform:rotate(0deg);
-}
+.dislike-btn{
 
-to{
-transform:rotate(360deg);
-}
+position:absolute;
 
-}
+left:0;
 
+top:50%;
 
-/* TRACK INFO */
+transform:translateY(-50%);
 
-.track-info{
+pointer-events:auto;
 
-padding:20px 22px 8px;
+background:var(--rust);
 
 }
 
 
-.song-title{
 
-font-family:'Fraunces',serif;
+.undo-btn{
 
-font-size:1.5rem;
+position:absolute;
 
-margin-bottom:4px;
+bottom:-80px;
 
-}
+left:50%;
 
+transform:translateX(-50%);
 
-.artist-name{
+pointer-events:auto;
 
-font-size:.98rem;
-
-color:var(--text-body);
+background:var(--cream-light);
 
 }
 
 
-/* PLAYER */
 
-.player-wrap{
+/* EMPTY */
 
-padding:14px 22px 0;
+.empty-state{
 
-}
-
-
-#soundcloud-embed{
-
-width:100%;
-
-height:88px;
-
-border:none;
-
-border-radius:var(--radius-md);
+display:none;
 
 }
 
@@ -520,11 +738,14 @@ border-radius:var(--radius-md);
 
 <div class="brand">
 
+
 <div class="brand-mark"></div>
+
 
 <span class="brand-name">
 Sindr
 </span>
+
 
 </div>
 
@@ -552,11 +773,6 @@ Log out
 
 
 </div>
-
-
-
-
-
 <main>
 
 
@@ -566,9 +782,7 @@ Swipe right to like, left to pass
 
 
 
-
 <div class="stack" id="cardStack">
-
 
 
 <div class="card behind-2"></div>
@@ -577,23 +791,28 @@ Swipe right to like, left to pass
 
 
 
-
-
-<!-- ONLY THIS CARD MOVES -->
-
 <div class="card active" id="activeCard">
-
 
 
 <div class="art-wrap">
 
 
-<div class="art-image" id="artImage"></div>
+<div 
+class="art-image" 
+id="artImage">
+
+</div>
 
 
-<span class="genre-pill" id="genreLabel">
+
+<span 
+class="genre-pill" 
+id="genreLabel">
+
 Genre
+
 </span>
+
 
 
 <div class="vinyl"></div>
@@ -608,17 +827,28 @@ Genre
 <div class="track-info">
 
 
-<h2 class="song-title" id="songTitle">
+<h2 
+class="song-title" 
+id="songTitle">
+
 Song title
+
 </h2>
 
 
-<p class="artist-name" id="artistName">
+
+<p 
+class="artist-name" 
+id="artistName">
+
 Artist name
+
 </p>
 
 
+
 </div>
+
 
 
 
@@ -648,14 +878,15 @@ allow="autoplay">
 
 
 
-
-
-<!-- BUTTONS STAY FIXED -->
+<!-- BUTTONS OUTSIDE CARD SO THEY DON'T MOVE -->
 
 <div class="actions">
 
 
-<button class="action-btn undo-btn" id="undoBtn">
+<button 
+class="action-btn undo-btn" 
+id="undoBtn">
+
 
 <svg 
 viewBox="0 0 24 24"
@@ -663,10 +894,14 @@ fill="none"
 stroke="black"
 stroke-width="2">
 
+
 <path d="M3 10h9a5 5 0 0 1 0 10H7"/>
+
 <path d="M7 5 3 10l4 5"/>
 
+
 </svg>
+
 
 </button>
 
@@ -674,18 +909,26 @@ stroke-width="2">
 
 
 
+<button 
+class="action-btn dislike-btn" 
+id="dislikeBtn">
 
-<button class="action-btn dislike-btn" id="dislikeBtn">
 
+<svg
 
-<svg 
 viewBox="0 0 24 24"
+
 fill="none"
+
 stroke="white"
+
 stroke-width="2.5">
 
+
 <path d="M6 6l12 12"/>
+
 <path d="M18 6L6 18"/>
+
 
 </svg>
 
@@ -697,13 +940,19 @@ stroke-width="2.5">
 
 
 
-<button class="action-btn like-btn" id="likeBtn">
+<button 
+class="action-btn like-btn" 
+id="likeBtn">
 
 
-<svg 
+<svg
+
 viewBox="0 0 24 24"
+
 fill="none"
+
 stroke="white"
+
 stroke-width="2.2">
 
 
@@ -724,8 +973,38 @@ c-2.5 4.6-9.4 9-9.4 9z"/>
 
 
 
+</div>
+
+
+
+
+
+<div 
+class="empty-state" 
+id="emptyState">
+
+
+<h2>
+You're all caught up
+</h2>
+
+
+<p>
+We're queuing more tracks based on what you liked.
+</p>
+
+
+
+<button id="refreshBtn">
+
+Refresh
+
+</button>
+
+
 
 </div>
+
 
 
 </div>
@@ -733,26 +1012,38 @@ c-2.5 4.6-9.4 9-9.4 9z"/>
 
 </main>
 
-  <script>
 
-const BASE_URL =
+
+
+
+<script>
+
+
+const BASE_URL = 
 "https://group-10-backend.onrender.com";
+
 
 
 async function checkLogin(){
 
+
 try{
+
 
 const response = await fetch(
 
 `${BASE_URL}/profile`,
 
 {
+
 method:"GET",
+
 credentials:"include"
+
 }
 
 );
+
 
 
 if(response.status===401){
@@ -760,6 +1051,7 @@ if(response.status===401){
 window.location.replace("login.html");
 
 }
+
 
 
 }
@@ -770,19 +1062,20 @@ window.location.replace("login.html");
 
 }
 
+
 }
+
 
 
 checkLogin();
 
 
 
-let currentSong = null;
+
+let currentSong=null;
 
 
 
-
-/* SEND SWIPE */
 
 async function sendSwipe(direction){
 
@@ -792,6 +1085,7 @@ if(!currentSong){
 return;
 
 }
+
 
 
 try{
@@ -813,6 +1107,7 @@ headers:{
 
 },
 
+
 body:JSON.stringify({
 
 song_id:currentSong.id,
@@ -821,9 +1116,19 @@ direction:direction
 
 })
 
+
 }
 
 );
+
+
+
+setTimeout(()=>{
+
+loadSong();
+
+},300);
+
 
 
 }
@@ -831,10 +1136,7 @@ direction:direction
 
 catch(error){
 
-console.error(
-"SWIPE ERROR:",
-error
-);
+console.error(error);
 
 }
 
@@ -845,8 +1147,9 @@ error
 
 
 
+const card =
+document.getElementById("activeCard");
 
-/* BUTTONS */
 
 const likeButton =
 document.getElementById("likeBtn");
@@ -857,15 +1160,41 @@ document.getElementById("dislikeBtn");
 
 
 
+
+
+let startX=0;
+
+let currentX=0;
+
+let dragging=false;
+
+
+
+
+/* BUTTON CLICKS */
+
+
 likeButton.addEventListener(
-
 "click",
+()=>{
 
-async()=>{
 
-await sendSwipe("like");
+likeButton.classList.add(
+"active-glow"
+);
 
-loadSong();
+
+sendSwipe("like");
+
+
+setTimeout(()=>{
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+},400);
+
 
 }
 
@@ -874,14 +1203,26 @@ loadSong();
 
 
 dislikeButton.addEventListener(
-
 "click",
+()=>{
 
-async()=>{
 
-await sendSwipe("dislike");
+dislikeButton.classList.add(
+"active-glow"
+);
 
-loadSong();
+
+sendSwipe("dislike");
+
+
+setTimeout(()=>{
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+},400);
+
 
 }
 
@@ -892,19 +1233,8 @@ loadSong();
 
 
 
-/* CARD SWIPE */
 
-const card =
-document.getElementById("activeCard");
-
-
-let startX = 0;
-
-let currentX = 0;
-
-let dragging = false;
-
-
+/* SWIPE EVENTS */
 
 
 card.addEventListener(
@@ -926,41 +1256,30 @@ endDrag
 
 
 
-
 card.addEventListener(
-
 "touchstart",
-
 startDrag,
-
 {
 passive:false
 }
-
 );
 
 
-document.addEventListener(
 
+document.addEventListener(
 "touchmove",
-
 drag,
-
 {
 passive:false
 }
-
 );
+
 
 
 document.addEventListener(
-
 "touchend",
-
 endDrag
-
 );
-
 
 
 
@@ -977,7 +1296,9 @@ return;
 }
 
 
+
 dragging=true;
+
 
 
 startX =
@@ -993,7 +1314,9 @@ e.touches[0].clientX
 e.clientX;
 
 
+
 currentX=startX;
+
 
 
 card.classList.add(
@@ -1008,6 +1331,7 @@ card.classList.add(
 
 
 
+
 function drag(e){
 
 
@@ -1016,6 +1340,7 @@ if(!dragging){
 return;
 
 }
+
 
 
 e.preventDefault();
@@ -1036,6 +1361,7 @@ e.clientX;
 
 
 
+
 let distance =
 currentX-startX;
 
@@ -1045,12 +1371,104 @@ card.style.transform =
 
 `
 translateX(${distance}px)
-rotate(${distance*0.05}deg)
+rotate(${distance*.05}deg)
 `;
 
 
 
+
+
+
+if(distance>30){
+
+
+card.classList.add(
+"like-glow"
+);
+
+
+card.classList.remove(
+"dislike-glow"
+);
+
+
+
+likeButton.classList.add(
+"active-glow"
+);
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+
+
 }
+
+
+
+else if(distance<-30){
+
+
+
+card.classList.add(
+"dislike-glow"
+);
+
+
+
+card.classList.remove(
+"like-glow"
+);
+
+
+
+dislikeButton.classList.add(
+"active-glow"
+);
+
+
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+
+
+}
+
+
+
+else{
+
+
+card.classList.remove(
+"like-glow",
+"dislike-glow"
+);
+
+
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+
+
+}
+
+
+
+}
+
 
 
 
@@ -1060,6 +1478,7 @@ rotate(${distance*0.05}deg)
 async function endDrag(){
 
 
+
 if(!dragging){
 
 return;
@@ -1067,7 +1486,9 @@ return;
 }
 
 
+
 dragging=false;
+
 
 
 card.classList.remove(
@@ -1081,7 +1502,8 @@ currentX-startX;
 
 
 
-if(distance > 100){
+
+if(distance>100){
 
 
 card.classList.add(
@@ -1089,23 +1511,22 @@ card.classList.add(
 );
 
 
-await sendSwipe("like");
+await sendSwipe(
+"like"
+);
 
 
-setTimeout(()=>{
 
 resetCard();
 
-loadSong();
-
-},300);
 
 
 }
 
 
 
-else if(distance < -100){
+else if(distance<-100){
+
 
 
 card.classList.add(
@@ -1113,16 +1534,15 @@ card.classList.add(
 );
 
 
-await sendSwipe("dislike");
+
+await sendSwipe(
+"dislike"
+);
 
 
-setTimeout(()=>{
 
 resetCard();
 
-loadSong();
-
-},300);
 
 
 }
@@ -1134,10 +1554,15 @@ else{
 
 card.style.transform="";
 
+
 }
 
 
+
+
 }
+
+
 
 
 
@@ -1147,38 +1572,33 @@ card.style.transform="";
 function resetCard(){
 
 
+
 card.classList.remove(
+"fly-right",
 "fly-left",
-"fly-right"
+"like-glow",
+"dislike-glow"
 );
+
 
 
 card.style.transform="";
 
 
-}
 
-
-
-
-
-
-
-/* UNDO */
-
-document
-.getElementById("undoBtn")
-.addEventListener(
-
-"click",
-
-()=>{
-
-resetCard();
-
-}
-
+likeButton.classList.remove(
+"active-glow"
 );
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+
+
+}
 
 
 
@@ -1190,11 +1610,23 @@ resetCard();
 
 
 document
+.getElementById("likedSongsBtn")
+.addEventListener(
+"click",
+()=>{
+
+window.location.href="liked.html";
+
+}
+
+);
+
+
+
+document
 .getElementById("profileBtn")
 .addEventListener(
-
 "click",
-
 ()=>{
 
 window.location.href="profile.html";
@@ -1207,33 +1639,14 @@ window.location.href="profile.html";
 
 
 
-document
-.getElementById("likedSongsBtn")
-.addEventListener(
-
-"click",
-
-()=>{
-
-window.location.href="liked.html";
-
-}
-
-);
-
-
-
-
-
 
 /* LOGOUT */
+
 
 document
 .getElementById("logoutBtn")
 .addEventListener(
-
 "click",
-
 async()=>{
 
 
@@ -1269,9 +1682,12 @@ window.location.replace(
 
 
 
+
 /* LOAD SONG */
 
+
 async function loadSong(){
+
 
 
 try{
@@ -1299,6 +1715,7 @@ await response.json();
 
 
 
+
 if(!data.song){
 
 return;
@@ -1307,9 +1724,7 @@ return;
 
 
 
-currentSong =
-data.song;
-
+currentSong=data.song;
 
 
 
@@ -1325,6 +1740,7 @@ currentSong.title ||
 
 
 
+
 document
 .getElementById("artistName")
 .textContent =
@@ -1332,6 +1748,7 @@ document
 currentSong.artist ||
 
 "Unknown Artist";
+
 
 
 
@@ -1359,7 +1776,9 @@ document
 `url("${currentSong.artwork_url}")`;
 
 
+
 }
+
 
 
 
@@ -1368,19 +1787,19 @@ document
 .getElementById("soundcloud-embed")
 .src =
 
+
 `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentSong.permalink_url)}`;
-
-
 
 
 
 }
 
 
+
 catch(error){
 
 console.error(
-"LOAD SONG ERROR:",
+"LOAD SONG ERROR",
 error
 );
 
@@ -1388,11 +1807,15 @@ error
 }
 
 
+
 }
 
 
 
+
+
 loadSong();
+
 
 
 </script>
