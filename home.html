@@ -60,8 +60,15 @@ height:100%;
 body{
 
 background:
-radial-gradient(circle at 15% 10%,rgba(107,111,56,.15),transparent 45%),
-radial-gradient(circle at 85% 90%,rgba(193,80,46,.12),transparent 50%),
+
+radial-gradient(circle at 15% 10%,
+rgba(107,111,56,.15),
+transparent 45%),
+
+radial-gradient(circle at 85% 90%,
+rgba(193,80,46,.12),
+transparent 50%),
+
 var(--charcoal);
 
 color:var(--cream);
@@ -155,7 +162,7 @@ color:var(--text-cream);
 
 
 
-/* BUTTONS */
+/* NAV BUTTONS */
 
 
 .top-actions{
@@ -171,7 +178,6 @@ align-items:center;
 .liked-btn,
 .logout-btn{
 
-
 font-family:'Inter',sans-serif;
 
 font-size:.78rem;
@@ -186,9 +192,7 @@ color:var(--text-cream);
 
 background:transparent;
 
-border:
-
-1.5px solid rgba(242,226,184,.35);
+border:1.5px solid rgba(242,226,184,.35);
 
 border-radius:999px;
 
@@ -214,7 +218,6 @@ border-color:rgba(242,226,184,.6);
 
 
 /* MAIN */
-
 
 main{
 
@@ -248,8 +251,7 @@ text-align:center;
 
 
 
-/* CARD */
-
+/* CARD STACK */
 
 .stack{
 
@@ -262,7 +264,6 @@ max-width:380px;
 height:min(600px,72vh);
 
 }
-
 
 
 .card{
@@ -286,7 +287,6 @@ overflow:visible;
 color:var(--text-dark);
 
 }
-
 
 
 .card.behind-1{
@@ -315,9 +315,6 @@ z-index:0;
 }
 
 
-
-/* FIXED SWIPE */
-
 .card.active{
 
 z-index:2;
@@ -340,6 +337,26 @@ transition:none;
 }
 
 
+/* GLOW EFFECT */
+
+.card.like-glow{
+
+box-shadow:
+
+0 0 45px rgba(107,111,56,.9),
+0 30px 60px -20px rgba(0,0,0,.55);
+
+}
+
+
+.card.dislike-glow{
+
+box-shadow:
+
+0 0 45px rgba(193,80,46,.9),
+0 30px 60px -20px rgba(0,0,0,.55);
+
+}
 
 .card.fly-left{
 
@@ -367,7 +384,6 @@ opacity:0;
 
 /* ART */
 
-
 .art-wrap{
 
 position:relative;
@@ -390,6 +406,7 @@ flex-shrink:0;
 }
 
 
+
 .art-image{
 
 position:absolute;
@@ -406,12 +423,12 @@ background-position:center;
 
 /* TRACK INFO */
 
-
 .track-info{
 
 padding:20px 22px 8px;
 
 }
+
 
 
 .song-title{
@@ -423,6 +440,7 @@ font-size:1.5rem;
 margin-bottom:4px;
 
 }
+
 
 
 .artist-name{
@@ -437,12 +455,12 @@ color:var(--text-body);
 
 /* PLAYER */
 
-
 .player-wrap{
 
 padding:14px 22px 0;
 
 }
+
 
 
 #soundcloud-embed{
@@ -461,7 +479,6 @@ border-radius:var(--radius-md);
 
 /* GENRE */
 
-
 .genre-pill{
 
 position:absolute;
@@ -470,7 +487,8 @@ top:16px;
 
 left:16px;
 
-background:rgba(28,26,23,.65);
+background:
+rgba(28,26,23,.65);
 
 color:var(--text-cream);
 
@@ -488,7 +506,6 @@ z-index:3;
 
 /* VINYL */
 
-
 .vinyl{
 
 position:absolute;
@@ -504,6 +521,7 @@ height:130px;
 border-radius:50%;
 
 background:
+
 repeating-conic-gradient(
 var(--charcoal-2) 0deg 4deg,
 #262320 4deg 8deg
@@ -514,17 +532,23 @@ animation:spin 6s linear infinite;
 }
 
 
+
 @keyframes spin{
 
 from{
+
 transform:rotate(0deg);
+
 }
 
 to{
+
 transform:rotate(360deg);
+
 }
 
 }
+
 
 
 .vinyl::after{
@@ -549,8 +573,7 @@ top:43px;
 
 
 
-/* ACTIONS */
-
+/* ACTION BUTTONS */
 
 .actions{
 
@@ -562,9 +585,9 @@ right:-90px;
 
 top:0;
 
-bottom:0;
+height:100%;
 
-z-index:10;
+z-index:20;
 
 pointer-events:none;
 
@@ -590,6 +613,8 @@ justify-content:center;
 
 cursor:pointer;
 
+transition:.25s ease;
+
 }
 
 
@@ -601,6 +626,40 @@ width:26px;
 height:26px;
 
 }
+
+
+
+/* BUTTON GLOW */
+
+
+.like-btn.active-glow{
+
+box-shadow:
+
+0 0 15px rgba(107,111,56,.9),
+0 0 35px rgba(107,111,56,.7);
+
+transform:
+translateY(-50%)
+scale(1.15);
+
+}
+
+
+
+.dislike-btn.active-glow{
+
+box-shadow:
+
+0 0 15px rgba(193,80,46,.9),
+0 0 35px rgba(193,80,46,.7);
+
+transform:
+translateY(-50%)
+scale(1.15);
+
+}
+
 
 
 
@@ -660,60 +719,60 @@ background:var(--cream-light);
 
 /* EMPTY */
 
-
 .empty-state{
 
 display:none;
 
 }
 
-
-
 </style>
+
 </head>
+
 
 <body>
 
 
 <div class="topbar">
 
-    <div class="brand">
 
-        <div class="brand-mark"></div>
-
-        <span class="brand-name">
-            Sindr
-        </span>
-
-    </div>
+<div class="brand">
 
 
-
-    <div class="top-actions">
-
-
-        <button class="profile-btn" id="profileBtn">
-            Profile
-        </button>
+<div class="brand-mark"></div>
 
 
-        <button class="liked-btn" id="likedSongsBtn">
-            Liked Songs
-        </button>
+<span class="brand-name">
+Sindr
+</span>
 
-
-        <button class="logout-btn" id="logoutBtn">
-            Log out
-        </button>
-
-
-    </div>
 
 </div>
 
 
 
+<div class="top-actions">
 
+
+<button class="profile-btn" id="profileBtn">
+Profile
+</button>
+
+
+<button class="liked-btn" id="likedSongsBtn">
+Liked Songs
+</button>
+
+
+<button class="logout-btn" id="logoutBtn">
+Log out
+</button>
+
+
+</div>
+
+
+</div>
 <main>
 
 
@@ -726,233 +785,65 @@ Swipe right to like, left to pass
 <div class="stack" id="cardStack">
 
 
-    <!-- BACK CARDS -->
+<div class="card behind-2"></div>
 
-    <div class="card behind-2"></div>
+<div class="card behind-1"></div>
 
-    <div class="card behind-1"></div>
 
 
+<div class="card active" id="activeCard">
 
-    <!-- ACTIVE CARD -->
 
+<div class="art-wrap">
 
-    <div class="card active" id="activeCard">
 
+<div 
+class="art-image" 
+id="artImage">
 
-        <div class="art-wrap">
+</div>
 
 
-            <div 
-            class="art-image" 
-            id="artImage">
-            </div>
 
+<span 
+class="genre-pill" 
+id="genreLabel">
 
-            <span 
-            class="genre-pill" 
-            id="genreLabel">
-                Genre
-            </span>
+Genre
 
+</span>
 
-            <div class="vinyl"></div>
 
 
-        </div>
+<div class="vinyl"></div>
 
 
+</div>
 
 
 
-        <div class="track-info">
 
 
-            <h2 
-            class="song-title" 
-            id="songTitle">
+<div class="track-info">
 
-                Song title
 
-            </h2>
+<h2 
+class="song-title" 
+id="songTitle">
 
+Song title
 
+</h2>
 
-            <p 
-            class="artist-name" 
-            id="artistName">
 
-                Artist name
 
-            </p>
+<p 
+class="artist-name" 
+id="artistName">
 
+Artist name
 
-
-        </div>
-
-
-
-
-
-        <div class="player-wrap">
-
-
-            <iframe
-
-            id="soundcloud-embed"
-
-            scrolling="no"
-
-            frameborder="no"
-
-            allow="autoplay">
-
-            </iframe>
-
-
-
-        </div>
-
-
-
-
-
-
-
-        <div class="actions">
-
-
-
-            <button 
-            class="action-btn undo-btn" 
-            id="undoBtn">
-
-
-                <svg 
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="black"
-                stroke-width="2">
-
-
-                <path d="M3 10h9a5 5 0 0 1 0 10H7"/>
-
-                <path d="M7 5 3 10l4 5"/>
-
-
-                </svg>
-
-
-
-            </button>
-
-
-
-
-
-
-
-            <button 
-            class="action-btn dislike-btn" 
-            id="dislikeBtn">
-
-
-                <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                stroke-width="2.5">
-
-
-                <path d="M6 6l12 12"/>
-
-                <path d="M18 6L6 18"/>
-
-
-                </svg>
-
-
-            </button>
-
-
-
-
-
-
-
-
-            <button 
-            class="action-btn like-btn" 
-            id="likeBtn">
-
-
-                <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                stroke-width="2.2">
-
-
-                <path d="
-                M12.1 20.3
-                s-7.1-4.4-9.6-9
-                A5.4 5.4 0 0 1
-                12 5.5
-                a5.4 5.4 0 0 1
-                9.5 5.8
-                c-2.5 4.6-9.4 9-9.4 9z"/>
-
-
-                </svg>
-
-
-
-            </button>
-
-
-
-        </div>
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-    <!-- EMPTY STATE -->
-
-
-    <div 
-    class="empty-state" 
-    id="emptyState">
-
-
-        <h2>
-        You're all caught up
-        </h2>
-
-
-
-        <p>
-        We're queuing more tracks based on what you liked.
-        </p>
-
-
-        <button id="refreshBtn">
-
-            Refresh
-
-        </button>
-
-
-
-    </div>
+</p>
 
 
 
@@ -960,180 +851,390 @@ Swipe right to like, left to pass
 
 
 
+
+
+<div class="player-wrap">
+
+
+<iframe
+
+id="soundcloud-embed"
+
+scrolling="no"
+
+frameborder="no"
+
+allow="autoplay">
+
+</iframe>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+<!-- BUTTONS OUTSIDE CARD SO THEY DON'T MOVE -->
+
+<div class="actions">
+
+
+<button 
+class="action-btn undo-btn" 
+id="undoBtn">
+
+
+<svg 
+viewBox="0 0 24 24"
+fill="none"
+stroke="black"
+stroke-width="2">
+
+
+<path d="M3 10h9a5 5 0 0 1 0 10H7"/>
+
+<path d="M7 5 3 10l4 5"/>
+
+
+</svg>
+
+
+</button>
+
+
+
+
+
+<button 
+class="action-btn dislike-btn" 
+id="dislikeBtn">
+
+
+<svg
+
+viewBox="0 0 24 24"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="2.5">
+
+
+<path d="M6 6l12 12"/>
+
+<path d="M18 6L6 18"/>
+
+
+</svg>
+
+
+</button>
+
+
+
+
+
+
+<button 
+class="action-btn like-btn" 
+id="likeBtn">
+
+
+<svg
+
+viewBox="0 0 24 24"
+
+fill="none"
+
+stroke="white"
+
+stroke-width="2.2">
+
+
+<path d="
+M12.1 20.3
+s-7.1-4.4-9.6-9
+A5.4 5.4 0 0 1
+12 5.5
+a5.4 5.4 0 0 1
+9.5 5.8
+c-2.5 4.6-9.4 9-9.4 9z"/>
+
+
+</svg>
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div 
+class="empty-state" 
+id="emptyState">
+
+
+<h2>
+You're all caught up
+</h2>
+
+
+<p>
+We're queuing more tracks based on what you liked.
+</p>
+
+
+
+<button id="refreshBtn">
+
+Refresh
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
 </main>
+
+
+
+
+
 <script>
 
-const BASE_URL = "https://group-10-backend.onrender.com";
+
+const BASE_URL = 
+"https://group-10-backend.onrender.com";
+
 
 
 async function checkLogin(){
 
-    try{
 
-        const response = await fetch(
-            `${BASE_URL}/profile`,
-            {
-                method:"GET",
-                credentials:"include"
-            }
-        );
+try{
 
 
-        if(response.status === 401){
+const response = await fetch(
 
-            window.location.replace("login.html");
+`${BASE_URL}/profile`,
 
-        }
+{
 
+method:"GET",
 
-    }catch(error){
-
-        window.location.replace("login.html");
-
-    }
+credentials:"include"
 
 }
+
+);
+
+
+
+if(response.status===401){
+
+window.location.replace("login.html");
+
+}
+
+
+
+}
+
+catch(error){
+
+window.location.replace("login.html");
+
+}
+
+
+}
+
 
 
 checkLogin();
 
 
 
-let currentSong = null;
+
+let currentSong=null;
+
 
 
 
 async function sendSwipe(direction){
 
 
-    if(!currentSong){
+if(!currentSong){
 
-        console.log("No current song");
-
-        return;
-
-    }
-
-
-
-    try{
-
-
-        const response = await fetch(
-
-            `${BASE_URL}/swipe`,
-
-            {
-
-                method:"POST",
-
-                credentials:"include",
-
-                headers:{
-
-                    "Content-Type":"application/json"
-
-                },
-
-
-                body:JSON.stringify({
-
-                    song_id:currentSong.id,
-
-                    direction:direction
-
-                })
-
-
-            }
-
-        );
-
-
-
-        const data = await response.json();
-
-
-        console.log("Swipe response:",data);
-
-
-
-        setTimeout(()=>{
-
-            loadSong();
-
-        },300);
-
-
-
-    }
-
-    catch(error){
-
-        console.error(
-            "SWIPE ERROR:",
-            error
-        );
-
-    }
-
+return;
 
 }
 
 
 
+try{
 
 
+await fetch(
 
-/* BUTTONS */
+`${BASE_URL}/swipe`,
+
+{
+
+method:"POST",
+
+credentials:"include",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
 
 
-document
-.getElementById("likeBtn")
-.addEventListener(
-"click",
-()=>{
+body:JSON.stringify({
 
-sendSwipe("like");
+song_id:currentSong.id,
+
+direction:direction
+
+})
+
 
 }
+
 );
 
 
 
-document
-.getElementById("dislikeBtn")
-.addEventListener(
-"click",
-()=>{
+setTimeout(()=>{
 
-sendSwipe("dislike");
+loadSong();
+
+},300);
+
+
 
 }
-);
+
+
+catch(error){
+
+console.error(error);
+
+}
+
+
+}
 
 
 
-
-
-
-
-/* CARD SWIPE */
 
 
 const card =
 document.getElementById("activeCard");
 
 
-
-let startX = 0;
-
-let currentX = 0;
-
-let dragging = false;
+const likeButton =
+document.getElementById("likeBtn");
 
 
+const dislikeButton =
+document.getElementById("dislikeBtn");
 
+
+
+
+
+let startX=0;
+
+let currentX=0;
+
+let dragging=false;
+
+
+
+
+/* BUTTON CLICKS */
+
+
+likeButton.addEventListener(
+"click",
+()=>{
+
+
+likeButton.classList.add(
+"active-glow"
+);
+
+
+sendSwipe("like");
+
+
+setTimeout(()=>{
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+},400);
+
+
+}
+
+);
+
+
+
+dislikeButton.addEventListener(
+"click",
+()=>{
+
+
+dislikeButton.classList.add(
+"active-glow"
+);
+
+
+sendSwipe("dislike");
+
+
+setTimeout(()=>{
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+},400);
+
+
+}
+
+);
+
+
+
+
+
+
+
+/* SWIPE EVENTS */
 
 
 card.addEventListener(
@@ -1152,7 +1253,6 @@ document.addEventListener(
 "mouseup",
 endDrag
 );
-
 
 
 
@@ -1186,42 +1286,46 @@ endDrag
 
 
 
-
 function startDrag(e){
 
 
+if(e.target.closest("button")){
 
-    if(e.target.closest("button")){
+return;
 
-        return;
-
-    }
-
-
-
-    dragging = true;
+}
 
 
 
-    startX =
-    e.type.includes("touch")
-    ?
-    e.touches[0].clientX
-    :
-    e.clientX;
+dragging=true;
 
 
 
-    currentX = startX;
+startX =
+
+e.type.includes("touch")
+
+?
+
+e.touches[0].clientX
+
+:
+
+e.clientX;
 
 
 
-    card.classList.add(
-    "dragging"
-    );
+currentX=startX;
+
+
+
+card.classList.add(
+"dragging"
+);
 
 
 }
+
 
 
 
@@ -1231,44 +1335,139 @@ function startDrag(e){
 function drag(e){
 
 
+if(!dragging){
 
-    if(!dragging){
+return;
 
-        return;
-
-    }
-
-
-
-    e.preventDefault();
+}
 
 
 
-    currentX =
-    e.type.includes("touch")
-    ?
-    e.touches[0].clientX
-    :
-    e.clientX;
+e.preventDefault();
 
 
 
-    let distance =
-    currentX-startX;
+currentX =
+
+e.type.includes("touch")
+
+?
+
+e.touches[0].clientX
+
+:
+
+e.clientX;
 
 
 
 
-    card.style.transform =
+let distance =
+currentX-startX;
 
-    `
-    translateX(${distance}px)
-    rotate(${distance*0.05}deg)
-    `;
+
+
+card.style.transform =
+
+`
+translateX(${distance}px)
+rotate(${distance*.05}deg)
+`;
+
+
+
+
+
+
+if(distance>30){
+
+
+card.classList.add(
+"like-glow"
+);
+
+
+card.classList.remove(
+"dislike-glow"
+);
+
+
+
+likeButton.classList.add(
+"active-glow"
+);
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
 
 
 }
 
+
+
+else if(distance<-30){
+
+
+
+card.classList.add(
+"dislike-glow"
+);
+
+
+
+card.classList.remove(
+"like-glow"
+);
+
+
+
+dislikeButton.classList.add(
+"active-glow"
+);
+
+
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+
+
+}
+
+
+
+else{
+
+
+card.classList.remove(
+"like-glow",
+"dislike-glow"
+);
+
+
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
+
+
+}
+
+
+
+}
 
 
 
@@ -1280,89 +1479,90 @@ async function endDrag(){
 
 
 
-    if(!dragging){
+if(!dragging){
 
-        return;
+return;
 
-    }
-
-
-
-    dragging=false;
+}
 
 
 
-    card.classList.remove(
-    "dragging"
-    );
+dragging=false;
 
 
 
-    let distance =
-    currentX-startX;
+card.classList.remove(
+"dragging"
+);
+
+
+
+let distance =
+currentX-startX;
 
 
 
 
-    if(distance > 100){
+if(distance>100){
+
+
+card.classList.add(
+"fly-right"
+);
+
+
+await sendSwipe(
+"like"
+);
 
 
 
-        card.classList.add(
-        "fly-right"
-        );
-
-
-
-        await sendSwipe(
-        "like"
-        );
-
-
-
-        resetCard();
-
-
-
-    }
-
-
-
-    else if(distance < -100){
-
-
-
-        card.classList.add(
-        "fly-left"
-        );
-
-
-
-        await sendSwipe(
-        "dislike"
-        );
-
-
-
-        resetCard();
-
-
-
-    }
-
-
-
-    else{
-
-
-        card.style.transform="";
-
-
-    }
+resetCard();
 
 
 
 }
+
+
+
+else if(distance<-100){
+
+
+
+card.classList.add(
+"fly-left"
+);
+
+
+
+await sendSwipe(
+"dislike"
+);
+
+
+
+resetCard();
+
+
+
+}
+
+
+
+else{
+
+
+card.style.transform="";
+
+
+}
+
+
+
+
+}
+
+
 
 
 
@@ -1372,17 +1572,30 @@ async function endDrag(){
 function resetCard(){
 
 
-    card.classList.remove(
-    "fly-right"
-    );
+
+card.classList.remove(
+"fly-right",
+"fly-left",
+"like-glow",
+"dislike-glow"
+);
 
 
-    card.classList.remove(
-    "fly-left"
-    );
+
+card.style.transform="";
 
 
-    card.style.transform="";
+
+likeButton.classList.remove(
+"active-glow"
+);
+
+
+
+dislikeButton.classList.remove(
+"active-glow"
+);
+
 
 
 }
@@ -1393,34 +1606,34 @@ function resetCard(){
 
 
 
-
-/* UNDO BUTTON */
+/* NAVIGATION */
 
 
 document
-.getElementById("undoBtn")
+.getElementById("likedSongsBtn")
 .addEventListener(
 "click",
 ()=>{
 
-
-    card.classList.remove(
-    "fly-left"
-    );
-
-
-    card.classList.remove(
-    "fly-right"
-    );
-
-
-    card.style.transform="";
-
+window.location.href="liked.html";
 
 }
 
 );
 
+
+
+document
+.getElementById("profileBtn")
+.addEventListener(
+"click",
+()=>{
+
+window.location.href="profile.html";
+
+}
+
+);
 
 
 
@@ -1470,50 +1683,6 @@ window.location.replace(
 
 
 
-/* NAVIGATION */
-
-
-document
-.getElementById("likedSongsBtn")
-.addEventListener(
-"click",
-()=>{
-
-
-window.location.href =
-"liked.html";
-
-
-}
-
-);
-
-
-
-
-document
-.getElementById("profileBtn")
-.addEventListener(
-"click",
-()=>{
-
-
-window.location.href =
-"profile.html";
-
-
-}
-
-);
-
-
-
-
-
-
-
-
-
 /* LOAD SONG */
 
 
@@ -1522,13 +1691,6 @@ async function loadSong(){
 
 
 try{
-
-
-console.log(
-"Loading song..."
-);
-
-
 
 
 const response =
@@ -1540,19 +1702,11 @@ await fetch(
 
 method:"GET",
 
-credentials:"include",
-
-headers:{
-
-"Accept":"application/json"
-
-}
+credentials:"include"
 
 }
 
 );
-
-
 
 
 
@@ -1561,21 +1715,8 @@ await response.json();
 
 
 
-console.log(
-"Backend response:",
-data
-);
-
-
-
-
-
 
 if(!data.song){
-
-console.log(
-"No song returned"
-);
 
 return;
 
@@ -1583,12 +1724,7 @@ return;
 
 
 
-
-
-currentSong =
-data.song;
-
-
+currentSong=data.song;
 
 
 
@@ -1596,8 +1732,11 @@ data.song;
 document
 .getElementById("songTitle")
 .textContent =
+
 currentSong.title ||
+
 "Unknown Title";
+
 
 
 
@@ -1605,8 +1744,11 @@ currentSong.title ||
 document
 .getElementById("artistName")
 .textContent =
+
 currentSong.artist ||
+
 "Unknown Artist";
+
 
 
 
@@ -1614,9 +1756,10 @@ currentSong.artist ||
 document
 .getElementById("genreLabel")
 .textContent =
-currentSong.genre ||
-"Unknown";
 
+currentSong.genre ||
+
+"Unknown";
 
 
 
@@ -1633,9 +1776,8 @@ document
 `url("${currentSong.artwork_url}")`;
 
 
+
 }
-
-
 
 
 
@@ -1645,28 +1787,19 @@ document
 .getElementById("soundcloud-embed")
 .src =
 
+
 `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentSong.permalink_url)}`;
-
-
-
-
-
-
-console.log(
-"Loaded:",
-currentSong
-);
-
 
 
 
 }
 
+
+
 catch(error){
 
-
 console.error(
-"LOAD SONG ERROR:",
+"LOAD SONG ERROR",
 error
 );
 
@@ -1674,8 +1807,8 @@ error
 }
 
 
-}
 
+}
 
 
 
@@ -1684,7 +1817,10 @@ error
 loadSong();
 
 
+
 </script>
 
+
 </body>
+
 </html>
