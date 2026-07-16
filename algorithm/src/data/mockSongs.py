@@ -1,3 +1,9 @@
+"""This is all just mock data, none of the urls are right. 
+I just put in artist, song name, and genre which is essentially 
+the important parts needed for this to work. WIll need to add more songs to fit all the genres implemented
+"""
+
+
 MOCK_SONGS = [
         {
         "id": 900000001,

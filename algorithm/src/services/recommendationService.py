@@ -8,11 +8,11 @@
 One function recommendationRoutes.js calls.
 """
 
-from src.utils import score_songs
-from src.utils.filter_songs import filter_songs
-from src.services import soundcloud_service
-from src.services import gemini_service
-from src.data.mock_user import SWIPE_HISTORY as MOCK_SWIPE_HISTORY
+from src.utils import scoreSongs as score_songs
+from src.utils.filterSongs import filter_songs
+from src.services import soundcloudService as soundcloud_service
+from src.services import geminiService as gemini_service
+from src.data.mockUser import SWIPE_HISTORY as MOCK_SWIPE_HISTORY
 
 def get_recommendation(genres=None, exclude_ids=None, swipe_history=None, preferred_genres=None):
     genres = genres or []

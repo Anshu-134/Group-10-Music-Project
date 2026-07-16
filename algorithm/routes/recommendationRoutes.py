@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
  
-from src.services.recommendation_service import get_recommendation
-from src.utils.score_songs import genre_affinity, artist_affinity, top_genre
+from src.services.recommendationService import get_recommendation
+from src.utils.scoreSongs import genre_affinity, artist_affinity, top_genre
  
 recommend_bp = Blueprint('recommend_bp', __name__)
  
