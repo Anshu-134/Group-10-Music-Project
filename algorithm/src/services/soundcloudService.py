@@ -5,7 +5,7 @@
 import os
 import requests
  
-from src.data.mock_songs import by_genre as mock_songs_by_genre
+from src.data.mockSongs import by_genre as mock_songs_by_genre
  
 DEFAULT_LIMIT = 20
  
