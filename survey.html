@@ -401,7 +401,7 @@ selectedMood=option.textContent;
 
 
 document.getElementById("continueBtn")
-.onclick=()=>{
+.onclick=async() => {
 
 
 localStorage.setItem(
@@ -427,6 +427,27 @@ localStorage.setItem(
     "surveyCompleted",
     "true"
 );
+
+
+const BASE_URL = "https://group-10-backend.onrender.com";
+try{
+ 
+    await fetch(`${BASE_URL}/survey`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            genres: selectedGenres,
+            mood: selectedMood,
+            artists: document.getElementById("artists").value,
+        }),
+    });
+ 
+}catch(error){
+ 
+    console.error("SURVEY SAVE ERROR:", error);
+ 
+}
 
 
 // GO TO HOME PAGE

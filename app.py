@@ -1,34 +1,35 @@
 import os
 import random
 import itertools
+import requests
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
+ 
 from sqlalchemy.exc import IntegrityError
-
+ 
 from models import db, Artist, Song, User, Swipe
-
+ 
 load_dotenv()
-
+ 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
-
+ 
 # Frontend is on Vercel, backend on Render — different origins, so the
 # login session cookie needs SameSite=None + Secure to survive the
 # cross-site request, and CORS needs supports_credentials=True so the
 # browser will actually send/accept it.
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
-
+ 
 CORS(
     app,
     origins=['https://anshu-134.github.io'],
     supports_credentials=True,
 )
-
+ 
 database_url = os.environ.get('DATABASE_URL', '')
 if database_url.startswith('postgres://'):
     # SQLAlchemy requires the postgresql:// scheme; Render's DATABASE_URL uses postgres://
@@ -39,6 +40,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 login_manager = LoginManager(app)
+ALGORITHM_SERVICE_URL = os.environ.get('ALGORITHM_SERVICE_URL', 'http://localhost:4000')
+ALGORITHM_SERVICE_TIMEOUT = 25
 
 # --- SoundCloud ---
 _sc = None
@@ -58,7 +61,7 @@ def _get_sc():
             auth_token=os.environ.get('SOUNDCLOUD_AUTH_TOKEN') or None,
         )
     return _sc
-
+ 
 def _fetch_track(genre, exclude_ids=None):
     """Pull up to 20 recent tracks for a genre and return one at random, skipping exclude_ids."""
     exclude_ids = exclude_ids or set()
@@ -72,7 +75,7 @@ def _fetch_track(genre, exclude_ids=None):
             if len(candidates) >= 5:
                 break
     return random.choice(candidates) if candidates else None
-
+ 
 def _track_to_dict(track):
     return {
         'id': track.id,
@@ -84,23 +87,50 @@ def _track_to_dict(track):
         'duration_ms': track.duration,
     }
 
+def _get_swipe_history(user_id):
+    """[{genre, artist, liked}] for this user -- the training signal handed
+    to the algorithm service (algorithm/src/utils/scoreSongs.py) on every
+    /recommend call."""
+    rows = (
+        db.session.query(Song.genre, Artist.name, Swipe.like)
+        .join(Swipe, Swipe.song_id == Song.song_id)
+        .outerjoin(Artist, Song.artist_id == Artist.artist_id)
+        .filter(Swipe.user_id == user_id)
+        .all()
+    )
+    return [
+        {'genre': genre, 'artist': artist_name, 'liked': bool(liked)}
+        for genre, artist_name, liked in rows
+    ]
+ 
+ 
+def _get_preferred_genres(user):
+    """Onboarding-survey genres, mapped to the canonical GENRES tags, for
+    the algorithm service's cold-start seeding. Empty if the user skipped
+    the survey or none of their answers map cleanly."""
+    if not user.onboarding_genres:
+        return []
+    raw = [g.strip().lower() for g in user.onboarding_genres.split(',') if g.strip()]
+    mapped = {ONBOARDING_GENRE_MAP[g] for g in raw if g in ONBOARDING_GENRE_MAP}
+    return list(mapped)
+
 
 # --- Auth ---
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
-
+ 
 @login_manager.unauthorized_handler
 def unauthorized():
     return jsonify({'status': 'error', 'message': 'not logged in'}), 401
-
-
+ 
+ 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     if not data or not data.get('username') or not data.get('email') or not data.get('password'):
         return jsonify({'status': 'error', 'message': 'username, email, and password required'}), 400
-
+ 
     user = User(
         username=data['username'],
         email=data['email'],
@@ -112,7 +142,7 @@ def register():
     except IntegrityError:
         db.session.rollback()
         return jsonify({'status': 'error', 'message': 'username or email already taken'}), 409
-
+ 
     login_user(user)
     return jsonify({'status': 'ok', 'message': 'registered', 'user': user.username})
 
@@ -122,15 +152,15 @@ def login():
     data = request.get_json()
     if not data or not data.get('username') or not data.get('password'):
         return jsonify({'status': 'error', 'message': 'username and password required'}), 400
-
+ 
     user = User.query.filter_by(username=data['username']).first()
     if not user or not check_password_hash(user.password_hash, data['password']):
         return jsonify({'status': 'error', 'message': 'invalid username or password'}), 401
-
+ 
     login_user(user)
     return jsonify({'status': 'ok', 'message': 'logged in', 'user': user.username})
-
-
+ 
+ 
 @app.route('/logout', methods=['POST'])
 @login_required
 def logout():
@@ -143,21 +173,21 @@ def logout():
 def survey():
     if current_user.fav_moods:
         return jsonify({'status': 'error', 'message': 'survey already submitted'}), 409
-
+ 
     data = request.get_json()
     genres = data.get('genres') if data else None
     mood = data.get('mood') if data else None
     if not genres or not mood:
         return jsonify({'status': 'error', 'message': 'genres and mood required'}), 400
-
+ 
     current_user.onboarding_genres = ','.join(genres) if isinstance(genres, list) else genres
     current_user.fav_moods = mood
     current_user.fav_artists = data.get('artists') or None
     db.session.commit()
-
+ 
     return jsonify({'status': 'ok', 'message': 'survey saved'})
-
-
+ 
+ 
 @app.route('/song', methods=['GET'])
 @login_required
 def get_song():
@@ -177,18 +207,18 @@ def _get_or_create_song(soundcloud_id):
     song = Song.query.filter_by(soundcloud_id=str(soundcloud_id)).first()
     if song:
         return song
-
+ 
     sc = _get_sc()
     track = sc.get_track(int(soundcloud_id))
     if not track:
         return None
-
+ 
     artist = Artist.query.filter_by(name=track.user.username).first()
     if not artist:
         artist = Artist(name=track.user.username, country=track.user.country_code)
         db.session.add(artist)
         db.session.flush()
-
+ 
     song = Song(
         soundcloud_id=str(track.id),
         title=track.title,
@@ -209,21 +239,21 @@ def log_swipe():
     direction = data.get('direction') if data else None
     if not song_id or direction not in ('like', 'dislike'):
         return jsonify({'status': 'error', 'message': 'song_id and direction (like/dislike) required'}), 400
-
+ 
     try:
         song = _get_or_create_song(song_id)
     except Exception as e:
         db.session.rollback()
         return jsonify({'status': 'error', 'message': f'SoundCloud error: {str(e)}'}), 502
-
+ 
     if not song:
         return jsonify({'status': 'error', 'message': 'song not found on SoundCloud'}), 404
-
+ 
     swipe = Swipe(user_id=current_user.user_id, song_id=song.song_id, like=(direction == 'like'))
     current_user.latest_swipe_song_id = song.song_id
     db.session.add(swipe)
     db.session.commit()
-
+ 
     return jsonify({'status': 'ok', 'song_id': song_id, 'direction': direction})
 
 
@@ -257,6 +287,7 @@ def recommend():
  
     return jsonify({'status': 'ok', 'song': data['song']})
 
+
 @app.route('/history', methods=['GET'])
 @login_required
 def history():
@@ -286,7 +317,7 @@ def history():
 @login_required
 def profile():
     liked_count = Swipe.query.filter_by(user_id=current_user.user_id, like=True).count()
-
+ 
     top_genre = (
         db.session.query(Song.genre)
         .join(Swipe, Swipe.song_id == Song.song_id)
@@ -296,7 +327,7 @@ def profile():
         .first()
     )
     favorite_genre = top_genre[0] if top_genre else current_user.onboarding_genres
-
+ 
     return jsonify({
         'status': 'ok',
         'username': current_user.username,
@@ -304,7 +335,8 @@ def profile():
         'favorite_genre': favorite_genre,
         'joined_at': current_user.created_at.isoformat(),
     })
-
-
+ 
+ 
 if __name__ == '__main__':
     app.run(debug=True)
+    
