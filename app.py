@@ -230,23 +230,32 @@ def log_swipe():
 @app.route('/recommend', methods=['GET'])
 @login_required
 def recommend():
-    # TODO: send liked/disliked tracks to Gemini and use its returned genre/query
-    # to call sc.search_tracks() or _fetch_track(). For now, swipe history is only
-    # used to avoid re-recommending songs the user already swiped on.
-    already_swiped = {
+    already_swiped = [
         song.soundcloud_id
         for song in Song.query.join(Swipe).filter(Swipe.user_id == current_user.user_id)
-    }
-
-    genre = random.choice(GENRES)
+    ]
+    swipe_history = _get_swipe_history(current_user.user_id)
+    preferred_genres = _get_preferred_genres(current_user)
+ 
     try:
-        track = _fetch_track(genre, exclude_ids=already_swiped)
+        resp = requests.post(
+            f'{ALGORITHM_SERVICE_URL}/recommend',
+            json={
+                'genres': GENRES,
+                'excludeIds': already_swiped,
+                'swipeHistory': swipe_history,
+                'preferredGenres': preferred_genres,
+            },
+            timeout=ALGORITHM_SERVICE_TIMEOUT,
+        )
+        data = resp.json()
     except Exception as e:
-        return jsonify({'status': 'error', 'message': f'SoundCloud error: {str(e)}'}), 502
-    if not track:
-        return jsonify({'status': 'error', 'message': 'no new tracks found'}), 404
-    return jsonify({'status': 'ok', 'song': _track_to_dict(track)})
-
+        return jsonify({'status': 'error', 'message': f'algorithm service error: {str(e)}'}), 502
+ 
+    if data.get('status') != 'ok':
+        return jsonify(data), 404
+ 
+    return jsonify({'status': 'ok', 'song': data['song']})
 
 @app.route('/history', methods=['GET'])
 @login_required
