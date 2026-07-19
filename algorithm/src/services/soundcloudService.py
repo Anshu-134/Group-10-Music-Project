@@ -4,10 +4,19 @@
 """
 import os
 import requests
+from soundcloud import SoundCloud
  
 from src.data.mockSongs import by_genre as mock_songs_by_genre
  
 DEFAULT_LIMIT = 20
+
+_client_id = None
+
+def _get_client_id():
+    global _client_id
+    if _client_id is None:
+        _client_id = os.environ.get('SOUNDCLOUD_CLIENT_ID') or SoundCloud.generate_client_id()
+    return _client_id
  
  
 def _track_from_api(raw):
@@ -24,11 +33,7 @@ def _track_from_api(raw):
     }
 
 def get_tracks_by_genre(genre, limit=DEFAULT_LIMIT):
-    client_id = os.environ.get('SOUNDCLOUD_CLIENT_ID')
- 
-    if not client_id:
-        print('[soundcloud_service] SOUNDCLOUD_CLIENT_ID not set -- using mock songs')
-        return mock_songs_by_genre(genre)
+    client_id = _get_client_id()
  
     try:
         resp = requests.get(

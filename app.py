@@ -51,6 +51,16 @@ GENRES = [
     'rock', 'classical', 'pop', 'soul', 'metal', 'folk',
 ]
 
+ONBOARDING_GENRE_MAP = {
+    'indie': 'indie',
+    'r&b': 'soul',
+    'hip-hop': 'hip-hop',
+    'pop': 'pop',
+    'rock': 'rock',
+    'edm': 'electronic',
+    'classical': 'classical',
+}
+
 def _get_sc():
     global _sc
     if _sc is None:
