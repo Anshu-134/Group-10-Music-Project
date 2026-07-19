@@ -21,7 +21,7 @@ load_dotenv()
 from flask import Flask
 from flask_cors import CORS
  
-from routes.recommednation_routes import recommend_bp
+from routes.recommendationRoutes import recommend_bp
  
 app = Flask(__name__)
 CORS(app)
