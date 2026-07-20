@@ -1,8 +1,6 @@
 """
  * Optional AI service for genre selection. Gemini uses user's swipe history to suggest a genre.
  * If failure, recommendations fall back into standard bandit algorithm. 
- * 
- * Note: I still need to verify the gemini model. 
 """
 import os
 import requests
@@ -52,7 +50,7 @@ def suggest_genre(swipe_history, available_genres):
  
     resp = requests.post(
         url,
-        params={'key': api_key},
+        headers={'x-goog-api-key': api_key, 'Content-Type': 'application/json'},
         json={
             'contents': [{'parts': [{'text': prompt}]}],
             'generationConfig': {'temperature': 0.4, 'maxOutputTokens': 20},

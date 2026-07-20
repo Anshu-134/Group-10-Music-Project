@@ -39,6 +39,12 @@ def get_tracks_by_genre(genre, limit=DEFAULT_LIMIT):
         resp = requests.get(
             'https://api-v2.soundcloud.com/search/tracks',
             params={'q': genre, 'client_id': client_id, 'limit': limit},
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                               '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                'Referer': 'https://soundcloud.com/',
+                'Origin': 'https://soundcloud.com',
+            },
             timeout=8,
         )
         resp.raise_for_status()
