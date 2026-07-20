@@ -1,6 +1,7 @@
 import os
 import random
 import itertools
+import re
 import requests
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
@@ -36,21 +37,21 @@ if database_url.startswith('postgres://'):
     database_url = database_url.replace('postgres://', 'postgresql://', 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+ 
 db.init_app(app)
-
+ 
 login_manager = LoginManager(app)
 ALGORITHM_SERVICE_URL = os.environ.get('ALGORITHM_SERVICE_URL', 'http://localhost:4000')
 ALGORITHM_SERVICE_TIMEOUT = 25
 
 # --- SoundCloud ---
 _sc = None
-
+ 
 GENRES = [
     'electronic', 'hip-hop', 'indie', 'ambient', 'jazz',
     'rock', 'classical', 'pop', 'soul', 'metal', 'folk',
 ]
-
+ 
 ONBOARDING_GENRE_MAP = {
     'indie': 'indie',
     'r&b': 'soul',
@@ -60,7 +61,7 @@ ONBOARDING_GENRE_MAP = {
     'edm': 'electronic',
     'classical': 'classical',
 }
-
+ 
 def _get_sc():
     global _sc
     if _sc is None:
@@ -71,6 +72,12 @@ def _get_sc():
             auth_token=os.environ.get('SOUNDCLOUD_AUTH_TOKEN') or None,
         )
     return _sc
+ 
+def _redact(text):
+    """SoundCloud error strings embed the full request URL, client_id
+    included -- never let that reach a log line or an API response."""
+    return re.sub(r'client_id=[^&\s]+', 'client_id=***', str(text))
+ 
  
 def _fetch_track(genre, exclude_ids=None):
     """Pull up to 20 recent tracks for a genre and return one at random, skipping exclude_ids."""
@@ -96,7 +103,7 @@ def _track_to_dict(track):
         'genre': track.genre,
         'duration_ms': track.duration,
     }
-
+ 
 def _get_swipe_history(user_id):
     """[{genre, artist, liked}] for this user -- the training signal handed
     to the algorithm service (algorithm/src/utils/scoreSongs.py) on every
@@ -113,7 +120,6 @@ def _get_swipe_history(user_id):
         for genre, artist_name, liked in rows
     ]
  
- 
 def _get_preferred_genres(user):
     """Onboarding-survey genres, mapped to the canonical GENRES tags, for
     the algorithm service's cold-start seeding. Empty if the user skipped
@@ -123,8 +129,8 @@ def _get_preferred_genres(user):
     raw = [g.strip().lower() for g in user.onboarding_genres.split(',') if g.strip()]
     mapped = {ONBOARDING_GENRE_MAP[g] for g in raw if g in ONBOARDING_GENRE_MAP}
     return list(mapped)
-
-
+ 
+ 
 # --- Auth ---
 @login_manager.user_loader
 def load_user(user_id):
@@ -155,8 +161,8 @@ def register():
  
     login_user(user)
     return jsonify({'status': 'ok', 'message': 'registered', 'user': user.username})
-
-
+ 
+ 
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -176,8 +182,8 @@ def login():
 def logout():
     logout_user()
     return jsonify({'status': 'ok', 'message': 'logged out'})
-
-
+ 
+ 
 @app.route('/survey', methods=['POST'])
 @login_required
 def survey():
@@ -205,12 +211,13 @@ def get_song():
     try:
         track = _fetch_track(genre)
     except Exception as e:
-        return jsonify({'status': 'error', 'message': f'SoundCloud error: {str(e)}'}), 502
+        print(f'[app] SoundCloud error in /song: {_redact(e)}')
+        return jsonify({'status': 'error', 'message': 'SoundCloud error, please try again'}), 502
     if not track:
         return jsonify({'status': 'error', 'message': f'no streamable tracks found for genre: {genre}'}), 404
     return jsonify({'status': 'ok', 'song': _track_to_dict(track)})
-
-
+ 
+ 
 def _get_or_create_song(soundcloud_id):
     """Look up a song by SoundCloud id, fetching from SoundCloud and inserting
     (song + artist, if needed) when it isn't in the DB yet."""
@@ -239,8 +246,8 @@ def _get_or_create_song(soundcloud_id):
     db.session.add(song)
     db.session.flush()
     return song
-
-
+ 
+ 
 @app.route('/swipe', methods=['POST'])
 @login_required
 def log_swipe():
@@ -254,7 +261,8 @@ def log_swipe():
         song = _get_or_create_song(song_id)
     except Exception as e:
         db.session.rollback()
-        return jsonify({'status': 'error', 'message': f'SoundCloud error: {str(e)}'}), 502
+        print(f'[app] SoundCloud error in /swipe: {_redact(e)}')
+        return jsonify({'status': 'error', 'message': 'SoundCloud error, please try again'}), 502
  
     if not song:
         return jsonify({'status': 'error', 'message': 'song not found on SoundCloud'}), 404
@@ -265,8 +273,8 @@ def log_swipe():
     db.session.commit()
  
     return jsonify({'status': 'ok', 'song_id': song_id, 'direction': direction})
-
-
+ 
+ 
 @app.route('/recommend', methods=['GET'])
 @login_required
 def recommend():
@@ -296,8 +304,8 @@ def recommend():
         return jsonify(data), 404
  
     return jsonify({'status': 'ok', 'song': data['song']})
-
-
+ 
+ 
 @app.route('/history', methods=['GET'])
 @login_required
 def history():
@@ -321,8 +329,8 @@ def history():
             for swipe in swipes
         ],
     })
-
-
+ 
+ 
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile():
@@ -349,4 +357,3 @@ def profile():
  
 if __name__ == '__main__':
     app.run(debug=True)
-    
